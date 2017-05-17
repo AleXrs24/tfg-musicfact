@@ -1,0 +1,14 @@
+<ion-content>
+    <ion-toolbar>
+        <ion-searchbar (ionInput)="getItems($event)" placeholder="Buscar por etiqueta"></ion-searchbar>
+    </ion-toolbar>
+
+    <ion-list>
+
+        <ion-item-group *ngFor="let tags of tracks">
+            <ion-item-divider color="light">{{ tags.tagName }}</ion-item-divider>
+            <button ion-item *ngFor="let track of tags.trackTags">{{ track.title }}</button>
+        </ion-item-group>
+
+    </ion-list>
+</ion-content>
