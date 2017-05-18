@@ -1,9 +1,12 @@
 <ion-content>
   <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-left></ion-icon>
-      @ionicframework
+    <ion-item *ngFor="let track of tracks_filter">
+      <ion-thumbnail item-left>
+        <img src="{{track.cover_page}}">
+      </ion-thumbnail>
+      <h2>{{track.title}}</h2>
+      <p>{{track.artist}}</p>
+      <ion-icon item-right name="more"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>
