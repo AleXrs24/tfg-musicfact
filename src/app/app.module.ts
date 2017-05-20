@@ -8,6 +8,7 @@ import { SearchPage } from '../pages/search/search';
 import { LikesPage } from '../pages/likes/likes';
 import { MenuPage } from './../pages/menu/menu';
 import { TabsPage } from '../pages/tabs/tabs';
+import { Profile } from './../pages/profile/profile';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -35,7 +36,8 @@ export const firebaseConfig = {
     SearchPage,
     LikesPage,
     MenuPage,
-    TabsPage
+    TabsPage,
+    Profile
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,8 @@ export const firebaseConfig = {
     SearchPage,
     LikesPage,
     MenuPage,
-    TabsPage
+    TabsPage,
+    Profile
   ],
   providers: [
     StatusBar,

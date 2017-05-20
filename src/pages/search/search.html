@@ -1,5 +1,5 @@
 <ion-content>
-    <ion-toolbar>
+    <!--<ion-toolbar>
         <ion-searchbar (ionInput)="getItems($event)" placeholder="Buscar por etiqueta"></ion-searchbar>
     </ion-toolbar>
 
@@ -10,5 +10,35 @@
             <button ion-item *ngFor="let track of tags.trackTags">{{ track.title }}</button>
         </ion-item-group>
 
+    </ion-list>-->
+
+    <ion-toolbar>
+        <ion-searchbar (ionInput)="getItems($event)" placeholder="Buscar"></ion-searchbar>
+    </ion-toolbar>
+
+    <ion-list>
+        <ion-item-group>
+            <ion-item-divider color="light">Pistas</ion-item-divider>
+            <ion-item *ngFor="let track of tracks">
+                <ion-avatar item-left>
+                    <img src="{{track.cover_page}}">
+                </ion-avatar>
+                <h2>{{track.title}}</h2>
+                <p>{{track.artist}}</p>
+                <ion-icon item-right name="pulse"></ion-icon>
+            </ion-item>
+        </ion-item-group>
+        <ion-item-group>
+            <ion-item-divider color="light">Gente</ion-item-divider>
+            <ion-item *ngFor="let user of users; let i = index">
+                <ion-avatar item-left>
+                    <img src="{{user.profile_image}}">
+                </ion-avatar>
+                <h2>{{user.name}}</h2>
+                <p>{{user.country}}</p>
+                <ion-icon *ngIf="!isFollowed[i]" item-right name="person-add" (click)="followUser(user.$key)"></ion-icon>
+                <ion-icon *ngIf="isFollowed[i]" color="app" item-right name="done-all" (click)="unFollowUser(user.$key)"></ion-icon>
+            </ion-item>
+        </ion-item-group>
     </ion-list>
 </ion-content>

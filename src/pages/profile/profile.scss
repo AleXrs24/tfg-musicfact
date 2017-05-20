@@ -1,0 +1,40 @@
+page-profile {
+    .profile-img{
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .card-background-page {
+        
+        ion-card {
+            position: relative;
+        }
+
+        .card-title {
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            width: 100%;
+            top: 33%;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+        }
+
+        .card-subtitle {
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            width: 100%;
+            top: 25%;
+            font-size: 1.0em;
+            color: #7C7C7C;
+            text-align: center;
+        }
+
+        .image {
+            height: 200px;
+            object-fit: cover;
+        }
+
+    }
+}

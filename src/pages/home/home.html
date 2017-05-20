@@ -2,15 +2,15 @@
 
   <button ion-button outline (click)="signInWithFacebook()">Facebook</button>
   <button ion-button outline (click)="signOut()">Logout</button>
-  <ion-card *ngFor="let track of tracks; let i = index">
+  <ion-card *ngFor="let track of tracks_filter; let i = index">
 
-    <ion-item>
+    <ion-item (click)="profileView($event, userData[i])">
       <ion-avatar item-left>
-        <img src="{{track.author_img}}">
+        <img src="{{userData[i].profile_image}}">
       </ion-avatar>
-      <h2>{{track.author}}</h2>
-      <!--<ion-icon small item-right name="repeat"></ion-icon>-->
-      <p>posteó una pista</p>
+      <h2>{{userData[i].name}}</h2>
+      <ion-icon small item-right name="repeat"></ion-icon>
+      <p>ha reposteado una pista</p>
     </ion-item>
 
     <img class="image" src="{{track.cover_page}}">
@@ -39,7 +39,11 @@
         </button>
       </ion-col>
       <ion-col col-3>
-        <button color="grey2" ion-button icon-left clear>
+        <button *ngIf="isRepost[i]" color="grey2" ion-button icon-left clear (click)="unRepostTrack(track.$key)">
+          <ion-icon color="app" name="repeat"></ion-icon>
+          <div>{{track.reposts}}</div>
+        </button>
+        <button *ngIf="!isRepost[i]" color="grey2" ion-button icon-left clear (click)="repostTrack(track.$key)">
           <ion-icon name="repeat"></ion-icon>
           <div>{{track.reposts}}</div>
         </button>
