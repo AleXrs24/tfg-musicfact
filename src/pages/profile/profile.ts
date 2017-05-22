@@ -1,3 +1,4 @@
+import { UsersList } from './../users-list/users-list';
 import { AuthService } from './../../providers/auth-service';
 import { DbApiService } from './../../shared/db-api.service';
 import { Component } from '@angular/core';
@@ -27,21 +28,25 @@ export class Profile {
   profile: string = "tracks";
   nfollowers: any = 0;
   nfollowing: any = 0;
+  isFollowed: boolean;
+  following: any[];
+  currentUser: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private auth: AuthService) {
     this.user = navParams.data;
   }
 
   ionViewDidLoad() {
+    this.currentUser = this.db.getCurrentUser().uid;
     this.db.getTracks().subscribe(resp => {
       this.tracks = resp;
-      this.tracks_filter = [];
       this.db.getTracksPosts(this.user.$key).subscribe(resp => {
         this.tracks_posts = resp;
+        this.tracks_filter = [];
         for (let track of this.tracks_posts) {
-          this.tracks_filter = this.tracks.filter((item) => {
+          this.tracks_filter.push(_.find(this.tracks, (item) => {
             return track.$key == item.$key;
-          })
+          }))
         }
       })
 
@@ -70,8 +75,23 @@ export class Profile {
       });
 
     });
-    if (this.user.followers) this.nfollowers = Object.keys(this.user.followers).length;
-    if (this.user.following) this.nfollowing = Object.keys(this.user.following).length;
+
+    this.db.getNumFollowers(this.user.$key).subscribe(resp => {
+      this.nfollowers = resp;
+      this.nfollowers = this.nfollowers.length;
+    })
+
+    this.db.getNumFollowing(this.user.$key).subscribe(resp => {
+      this.nfollowing = resp;
+      this.nfollowing = this.nfollowing.length;
+    })
+
+    this.db.getFollowing().subscribe(resp => {
+      this.following = resp;
+      this.isFollowed = _.some(this.following, (item) => {
+        return this.user.$key == item.$key;
+      })
+    })
 
   }
 
@@ -89,6 +109,18 @@ export class Profile {
 
   unRepostTrack(track) {
     this.db.unRepostTrack(track);
+  }
+
+  followUser(userId) {
+    this.db.followUser(userId);
+  }
+
+  unFollowUser(userId) {
+    this.db.unFollowUser(userId);
+  }
+
+  viewUsers(user, follow) {
+    this.navCtrl.push(UsersList, { dataUser: user, dataFollow: follow });
   }
 
 }

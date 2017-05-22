@@ -21,6 +21,16 @@
     </ion-avatar>
     <h2>{{user.name}}</h2>
     <p>{{user.country}}</p>
+    <div *ngIf="user.$key != currentUser" item-right>
+      <button *ngIf="!isFollowed" ion-button small icon-left color="app" (click)="followUser(user.$key)">
+        <ion-icon name="person-add" ></ion-icon>
+        Seguir
+      </button>
+      <button *ngIf="isFollowed" ion-button small icon-left outline color="app" (click)="unFollowUser(user.$key)">
+        <ion-icon name="done-all" ></ion-icon>
+        Siguiendo
+      </button>
+    </div>
   </ion-item>
 
   <ion-toolbar color="white">
@@ -91,14 +101,14 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'data'">
-      <ion-item>
+      <ion-item (click)="viewUsers(user, 'Seguidores')">
         <h2>Seguidores</h2>
         <button color="app" item-right ion-button icon-right clear>
           <p>{{nfollowers}}</p>
           <ion-icon color="app" name="ios-arrow-forward"></ion-icon>
         </button>
       </ion-item>
-      <ion-item>
+      <ion-item (click)="viewUsers(user, 'Siguiendo')">
         <h2>Siguiendo</h2>
         <button color="app" item-right ion-button icon-right clear>
           <p>{{nfollowing}}</p>

@@ -11,6 +11,10 @@ export class DbApiService {
   following: FirebaseListObservable<any[]>;
   tracks_reposts: FirebaseListObservable<any[]>;
   tracks_posts: FirebaseListObservable<any[]>;
+  users_list: FirebaseListObservable<any[]>;
+  nfollowers: FirebaseListObservable<any[]>;
+  nfollowing: FirebaseListObservable<any[]>;
+  comments: FirebaseListObservable<any[]>;
 
   constructor(private db: AngularFireDatabase, private auth: AuthService) {
 
@@ -39,6 +43,25 @@ export class DbApiService {
   getTracksPosts(data): FirebaseListObservable<any[]> {
     this.tracks_posts = this.db.list('/users/' + data + "/tracks");
     return this.tracks_posts;
+  }
+
+  getUsersList(data, follow): FirebaseListObservable<any[]> {
+    if (follow == 'Seguidores')
+      this.users_list = this.db.list('/users/' + data + "/followers");
+    else
+      this.users_list = this.db.list('/users/' + data + "/following");
+
+    return this.users_list;
+  }
+
+  getNumFollowers(user): FirebaseListObservable<any[]> {
+    this.nfollowers = this.db.list('/users/' + user + "/followers");
+    return this.nfollowers;
+  }
+
+  getNumFollowing(user): FirebaseListObservable<any[]> {
+    this.nfollowing = this.db.list('/users/' + user + "/following");
+    return this.nfollowing;
   }
 
   getUsers(): FirebaseListObservable<any[]> {
@@ -96,6 +119,25 @@ export class DbApiService {
     this.db.database.ref('/tracks/' + track_id).once('value').then((snapshot) => {
       this.db.list('/tracks').update(track_id, {
         reposts: snapshot.val().reposts - 1
+      })
+    })
+  }
+
+  getComments(track_id) {
+    this.comments = this.db.list('/comments/' + track_id);
+    return this.comments;
+  }
+
+  addComment(track_id, comment) {
+    this.comments.push({
+      user_img: this.auth.getCurrentUser().photoURL,
+      user_name: this.auth.getCurrentUser().displayName,
+      body: comment,
+      time: new Date().getTime()
+    });
+    this.db.database.ref('/tracks/' + track_id).once('value').then((snapshot) => {
+      this.db.list('/tracks').update(track_id, {
+        comments: snapshot.val().comments + 1
       })
     })
   }

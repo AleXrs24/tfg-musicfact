@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, PopoverController } from 'ionic-angular';
 
 import { DbApiService } from './../../shared/db-api.service';
 import { AuthService } from '../../providers/auth-service';
 import { Profile } from './../profile/profile';
+import { Comments } from './../comments/comments';
 import * as _ from 'lodash';
 //import { NativeAudio } from '@ionic-native/native-audio';
 
@@ -24,7 +25,7 @@ export class HomePage {
   userData: any[] = [];
 
   constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService,
-    private lc: LoadingController) {
+    private lc: LoadingController, private po: PopoverController) {
   }
 
   ionViewDidLoad() {
@@ -81,7 +82,7 @@ export class HomePage {
               this.isRepost.push(value);
             }
           });
-          
+
         });
 
         loader.dismiss();
@@ -104,6 +105,20 @@ export class HomePage {
 
   unRepostTrack(track) {
     this.db.unRepostTrack(track);
+  }
+
+  comments(track) {
+    let popover = this.po.create(Comments, { track_id: track });
+    let ev = {
+      target: {
+        getBoundingClientRect: () => {
+          return {
+            top: '150'
+          };
+        }
+      }
+    };
+    popover.present({ev});
   }
 
   signInWithFacebook(): void {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
 import { AuthService } from './../../providers/auth-service';
+import { Profile } from './../profile/profile';
 import * as _ from 'lodash';
 
 @Component({
@@ -88,4 +89,7 @@ export class SearchPage {
     this.db.unFollowUser(userId);
   }
 
+  profileView($event, user) {
+    this.navCtrl.push(Profile, user);
+  }
 }

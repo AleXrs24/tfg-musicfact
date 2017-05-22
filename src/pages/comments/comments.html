@@ -1,0 +1,33 @@
+<ion-content>
+  <form (ngSubmit)="addComment()" #addCommentForm="ngForm">
+    <ion-item>
+      <ion-textarea maxlength="100" placeholder="Escribe aquí tu comentario" [(ngModel)]="comment" name="comment" required></ion-textarea>
+      <button item-right ion-button clear small color="app" type="submit" [disabled]="!addCommentForm.form.valid">
+      <ion-icon name="paper-plane"></ion-icon>
+    </button>
+    </ion-item>
+  </form>
+
+  <ion-list>
+    <ion-item *ngFor="let comment of comments" text-wrap>
+      <ion-row>
+        <ion-col col-2>
+          <ion-avatar>
+            <img src="{{comment.user_img}}">
+          </ion-avatar>
+        </ion-col>
+        <ion-col>
+          <h2>{{comment.user_name}}</h2>
+          <p>{{comment.body}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col offset-7>
+          <ion-note class="time">
+            {{ comment.time | date:'dd/MM/yy' }} - {{ comment.time | date:'h:mm a' }}
+          </ion-note>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+</ion-content>

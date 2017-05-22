@@ -49,7 +49,7 @@
         </button>
       </ion-col>
       <ion-col col-3>
-        <button color="grey2" ion-button icon-left clear>
+        <button color="grey2" ion-button icon-left clear (click)="comments(track.$key)">
           <ion-icon name="chatboxes"></ion-icon>
           <div>{{track.comments}}</div>
         </button>

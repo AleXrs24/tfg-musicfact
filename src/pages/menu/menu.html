@@ -1,3 +1,22 @@
-<ion-content padding>
+<ion-content class="no-img">
+  <ion-list>
+    <ion-item-divider class="divider" color="light"></ion-item-divider>
+    <ion-item no-lines>
+      <ion-avatar item-left>
+        <img class="profile-img" src="{{image}}" />
+      </ion-avatar>
+      <h2>{{username}}</h2>
+      <p>{{level}}</p>
+    </ion-item>
+    <ion-item-divider class="divider" color="light"></ion-item-divider>
+    <ion-item>Configuración Básica</ion-item>
+    <ion-item no-lines>Configuración de notificaciones</ion-item>
+    <ion-item-divider class="divider" color="light"></ion-item-divider>
+    <ion-item>Contacto</ion-item>
+    <ion-item no-lines>Legal</ion-item>
+    <ion-item-divider class="divider" color="light"></ion-item-divider>
+    <ion-item no-lines (click)="logout()">Cerrar Sesión</ion-item>
+    <ion-item class="copyright" color="light">Version XXXX.XX.XX-release de la app</ion-item>
 
+  </ion-list>
 </ion-content>

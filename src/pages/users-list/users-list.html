@@ -7,12 +7,25 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>UsersList</ion-title>
+    <ion-title>{{follow}}</ion-title>
+    <ion-buttons end>
+      <button ion-button clear (click)="goTabs()">
+        <ion-icon color="app" name="home"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let user of users_show" (click)="profileView($event, user)">
+      <ion-avatar item-left>
+        <img src="{{user.profile_image}}">
+      </ion-avatar>
+      <h2>{{user.name}}</h2>
+      <p>{{user.country}}</p>
+    </ion-item>
+  </ion-list>
 </ion-content>
