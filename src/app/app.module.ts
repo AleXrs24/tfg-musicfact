@@ -11,6 +11,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { Profile } from './../pages/profile/profile';
 import { UsersList } from './../pages/users-list/users-list';
 import { Comments } from './../pages/comments/comments';
+import { UploadTrack } from './../pages/upload-track/upload-track';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -41,7 +42,8 @@ export const firebaseConfig = {
     TabsPage,
     Profile,
     UsersList,
-    Comments
+    Comments,
+    UploadTrack
   ],
   imports: [
     BrowserModule,
@@ -60,7 +62,8 @@ export const firebaseConfig = {
     TabsPage,
     Profile,
     UsersList,
-    Comments
+    Comments,
+    UploadTrack
   ],
   providers: [
     StatusBar,
