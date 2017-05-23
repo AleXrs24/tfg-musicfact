@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from './../providers/auth-service';
-import firebase from 'firebase';
 
 @Injectable()
 export class DbApiService {
@@ -158,57 +157,6 @@ export class DbApiService {
     let currentUserId = this.auth.getCurrentUser().uid;
     this.db.database.ref('/users/' + this.auth.getCurrentUser().uid + '/following/' + user_id).remove();
     this.db.database.ref('/users/' + user_id + '/followers/' + currentUserId).remove();
-  }
-
-  uploadFile(file) {
-    let storageRef: any,
-      trackName: any,
-      uploadTask: any,
-      currentUser: any,
-      metadata = {
-        contentType: 'audio/mp3'
-      };
-
-    storageRef = firebase.storage().ref();
-    currentUser = this.getCurrentUser().uid;
-    trackName = "track_" + currentUser + ".mp3";
-    uploadTask = storageRef.child('mp3/' + trackName).put(file, metadata);
-
-    // Listen for state changes, errors, and completion of the upload.
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-      (snapshot) => {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED: // or 'paused'
-            console.log('Upload is paused');
-            break;
-          case firebase.storage.TaskState.RUNNING: // or 'running'
-            console.log('Upload is running');
-            break;
-        }
-      }, (error) => {
-        switch (error.code) {
-          case 'storage/unauthorized':
-            // User doesn't have permission to access the object
-            break;
-          case 'storage/canceled':
-            // User canceled the upload
-            break;
-          case 'storage/unknown':
-            // Unknown error occurred, inspect error.serverResponse
-            break;
-        }
-      }, () => {
-        // Upload completed successfully, now we can get the download URL
-        console.log('Upload is finished');
-        let downloadURL = uploadTask.snapshot.downloadURL;
-        // Upload info to database
-        this.tracks.push({
-          audio: downloadURL
-        });
-      });
   }
 
 }

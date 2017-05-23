@@ -13,6 +13,8 @@ import { UsersList } from './../pages/users-list/users-list';
 import { Comments } from './../pages/comments/comments';
 import { UploadTrack } from './../pages/upload-track/upload-track';
 
+import { ProgressBar } from './../components/progress-bar/progress-bar';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -46,7 +48,8 @@ export const firebaseConfig = {
     Profile,
     UsersList,
     Comments,
-    UploadTrack
+    UploadTrack,
+    ProgressBar
   ],
   imports: [
     BrowserModule,

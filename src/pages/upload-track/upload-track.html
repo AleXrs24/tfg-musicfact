@@ -14,9 +14,64 @@
 
 
 <ion-content>
-  <ion-fab>
-    <button ion-fab color="app" (click)="uploadMP3()">
-        <ion-icon name="cloud-upload"></ion-icon>
+  <form (ngSubmit)="uploadTrack()" #uploadTrackForm="ngForm">
+
+    <ion-item no-lines>
+      <ion-thumbnail item-left>
+        <img src="{{coverpage}}">
+      </ion-thumbnail>
+      <h2>Cambiar portada</h2>
+      <ion-fab item-right right>
+        <button ion-fab color="app" (click)="updateCoverPage()">
+            <ion-icon name="camera"></ion-icon>
+        </button>
+      </ion-fab>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Título de la pista</ion-label>
+      <ion-input type="text" max="20" min="4" [(ngModel)]="track.title" name="title" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Etiqueta</ion-label>
+      <ion-select interface="action-sheet" [(ngModel)]="track.tag" name="tag" required>
+        <ion-option value="deep-house" selectedText>Deep House</ion-option>
+        <ion-option value="dance-edm">Dance & EDM</ion-option>
+        <ion-option value="future">Future</ion-option>
+        <ion-option value="techno">Techno</ion-option>
+        <ion-option value="pop">Pop</ion-option>
+        <ion-option value="electro">Electro</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-list radio-group [(ngModel)]="track.privacy" name="privacy" required>
+      <ion-list-header>
+        La pista será:
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Pública</ion-label>
+        <ion-radio checked color="app" value=""></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Privada</ion-label>
+        <ion-radio color="app" value=""></ion-radio>
+      </ion-item>
+    </ion-list>
+    
+    <ion-item>
+      <button ion-button round color="app" (click)="loadTrack()">
+        <ion-icon name="pulse"></ion-icon>
+      </button>
+      <ion-input type="url" placeholder="Ruta del archivo" value=""></ion-input>
+    </ion-item>
+
+    <button  ion-fab color="app" type="submit" [disabled]="!uploadTrackForm.form.valid">
+      <ion-icon name="cloud-upload"></ion-icon>
     </button>
-  </ion-fab>
+
+  </form>
+
+  <progress-bar *ngIf="progress != 0" [progress]="progress"></progress-bar>
+
 </ion-content>
