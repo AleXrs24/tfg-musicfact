@@ -20,6 +20,9 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { Facebook } from '@ionic-native/facebook';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { DbApiService } from './../shared/db-api.service';
 import { AuthService } from '../providers/auth-service';
 
@@ -71,7 +74,10 @@ export const firebaseConfig = {
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     DbApiService,
     AuthService,
-    Facebook
+    Facebook,
+    FileChooser,
+    FilePath,
+    AndroidPermissions
   ]
 })
 export class AppModule { }

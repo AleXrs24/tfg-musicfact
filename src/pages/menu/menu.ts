@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { UploadTrack } from './../upload-track/upload-track';
 
 @Component({
   selector: 'page-menu',
@@ -12,6 +13,6 @@ export class MenuPage {
   }
 
   uploadTrack() {
-    
+    this.navCtrl.push(UploadTrack);
   }
 }
