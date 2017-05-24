@@ -159,4 +159,15 @@ export class DbApiService {
     this.db.database.ref('/users/' + user_id + '/followers/' + currentUserId).remove();
   }
 
+  uploadToDatabase(artist, artist_img, audio, coverpage, track) {
+    let track_id;
+    track_id = this.tracks.push({
+      artist: artist, artist_img: artist_img, audio: audio, cover_page: coverpage, privacy: track.privacy,
+      tag: track.tag, title: track.title, comments: 0, likes: 0, reposts: 0
+    }).key;
+
+    this.db.database.ref('/users/' + this.auth.getCurrentUser().uid + '/tracks/').child(track_id).set(track_id);
+    
+  }
+
 }

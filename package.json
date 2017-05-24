@@ -21,6 +21,7 @@
     "@angular/platform-browser": "4.1.0",
     "@angular/platform-browser-dynamic": "4.1.0",
     "@ionic-native/android-permissions": "^3.10.3",
+    "@ionic-native/camera": "^3.10.3",
     "@ionic-native/core": "3.7.0",
     "@ionic-native/facebook": "^3.8.0",
     "@ionic-native/file-chooser": "^3.10.3",

@@ -12,6 +12,7 @@ import { Profile } from './../pages/profile/profile';
 import { UsersList } from './../pages/users-list/users-list';
 import { Comments } from './../pages/comments/comments';
 import { UploadTrack } from './../pages/upload-track/upload-track';
+import { ChooseMethod } from './../pages/choose-method/choose-method';
 
 import { ProgressBar } from './../components/progress-bar/progress-bar';
 
@@ -25,6 +26,8 @@ import { Facebook } from '@ionic-native/facebook';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { Camera } from '@ionic-native/camera';
+
 import { DbApiService } from './../shared/db-api.service';
 import { AuthService } from '../providers/auth-service';
 
@@ -49,7 +52,8 @@ export const firebaseConfig = {
     UsersList,
     Comments,
     UploadTrack,
-    ProgressBar
+    ProgressBar,
+    ChooseMethod
   ],
   imports: [
     BrowserModule,
@@ -69,7 +73,8 @@ export const firebaseConfig = {
     Profile,
     UsersList,
     Comments,
-    UploadTrack
+    UploadTrack,
+    ChooseMethod
   ],
   providers: [
     StatusBar,
@@ -80,7 +85,8 @@ export const firebaseConfig = {
     Facebook,
     FileChooser,
     FilePath,
-    AndroidPermissions
+    AndroidPermissions,
+    Camera
   ]
 })
 export class AppModule { }
