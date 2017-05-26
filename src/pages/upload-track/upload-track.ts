@@ -34,6 +34,8 @@ export class UploadTrack {
   coverpage_url: any;
   audio_url: any;
   newCoverPage: boolean = false;
+  uploadTask: any;
+  imageName: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private fc: FileChooser,
     private db: DbApiService, private fp: FilePath, private ap: AndroidPermissions, private camera: Camera) { }
@@ -102,7 +104,6 @@ export class UploadTrack {
       let blob = new Blob([byteArray], { type: 'image/jpg' });
 
       let storageRef: any,
-        imageName: any,
         uploadTask: any,
         currentUser: any,
         metadata = {
@@ -111,8 +112,8 @@ export class UploadTrack {
 
       storageRef = firebase.storage().ref();
       currentUser = this.db.getCurrentUser().uid;
-      imageName = "cover_page_" + this.track.title + "_" + currentUser + ".jpg";
-      uploadTask = storageRef.child('img/cover-pages/' + imageName).put(blob, metadata);
+      this.imageName = "cover_page_" + this.track.title + "_" + currentUser + ".jpg";
+      uploadTask = storageRef.child('img/cover-pages/' + this.imageName).put(blob, metadata);
 
       // Listen for state changes, errors, and completion of the upload.
       uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
@@ -156,7 +157,6 @@ export class UploadTrack {
     //AUDIO TRACK
     let storageRef: any,
       trackName: any,
-      uploadTask: any,
       currentUser: any,
       metadata = {
         contentType: 'audio/mp3'
@@ -165,10 +165,10 @@ export class UploadTrack {
     storageRef = firebase.storage().ref();
     currentUser = this.db.getCurrentUser().uid;
     trackName = "track_" + this.track.title + "_" + currentUser + ".mp3";
-    uploadTask = storageRef.child('mp3/' + trackName).put(this.audio_blob, metadata);
+    this.uploadTask = storageRef.child('mp3/' + trackName).put(this.audio_blob, metadata);
 
     // Listen for state changes, errors, and completion of the upload.
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+    this.uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       (snapshot) => {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         this.progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
@@ -188,6 +188,10 @@ export class UploadTrack {
             break;
           case 'storage/canceled':
             // User canceled the upload
+            let desertRef = storageRef.child('img/cover-pages/' + this.imageName);
+            desertRef.delete().then(() => {
+              this.progress = 0;
+            })
             break;
           case 'storage/unknown':
             // Unknown error occurred, inspect error.serverResponse
@@ -196,7 +200,7 @@ export class UploadTrack {
       }, () => {
         // Upload completed successfully, now we can get the download URL
         console.log('Upload is finished');
-        let downloadURL = uploadTask.snapshot.downloadURL;
+        let downloadURL = this.uploadTask.snapshot.downloadURL;
         this.audio_url = downloadURL;
 
         //Upload to Database
@@ -206,6 +210,10 @@ export class UploadTrack {
         this.navCtrl.popToRoot();
       });
 
+  }
+
+  cancelUpload() {
+    this.uploadTask.cancel();
   }
 
 }
