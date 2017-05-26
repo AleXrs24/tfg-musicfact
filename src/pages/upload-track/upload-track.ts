@@ -4,6 +4,7 @@ import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { DbApiService } from './../../shared/db-api.service';
 //import { ChooseMethod } from './../choose-method/choose-method';
 import firebase from 'firebase';
@@ -38,28 +39,58 @@ export class UploadTrack {
   imageName: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private fc: FileChooser,
-    private db: DbApiService, private fp: FilePath, private ap: AndroidPermissions, private camera: Camera) { }
+    private db: DbApiService, private fp: FilePath, private ap: AndroidPermissions, private camera: Camera,
+    private as: ActionSheet) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UploadTrack');
   }
 
+  selectOption() {
+    let buttonLabels = ['Cámara', 'Galería'];
 
-  updateCoverPage() {
+    const options: ActionSheetOptions = {
+      title: '¿Cómo desea cambiar la portada?',
+      subtitle: 'Elija una opción',
+      buttonLabels: buttonLabels,
+      addCancelButtonWithLabel: 'Cancel',
+      androidTheme: this.as.ANDROID_THEMES.THEME_HOLO_DARK
+    };
+
+    this.as.show(options).then((buttonIndex: number) => {
+      if (buttonIndex == 1) {
+        const options: CameraOptions = {
+          quality: 100,
+          sourceType: this.camera.PictureSourceType.CAMERA,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          encodingType: this.camera.EncodingType.JPEG,
+          targetWidth: 320,
+          targetHeight: 240,
+          mediaType: this.camera.MediaType.PICTURE,
+          correctOrientation: true
+        };
+        this.updateCoverPage(options);
+      } else if (buttonIndex == 2) {
+        const options: CameraOptions = {
+          quality: 100,
+          sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          encodingType: this.camera.EncodingType.JPEG,
+          targetWidth: 320,
+          targetHeight: 240,
+          mediaType: this.camera.MediaType.PICTURE,
+          correctOrientation: true
+        };
+        this.updateCoverPage(options);
+      }
+    });
+  }
+
+  updateCoverPage(options) {
     // let popover = this.po.create(ChooseMethod, { cover_page: this.coverpage });
     // popover.present({
     //   ev: myEvent
     // });
-    const options: CameraOptions = {
-      quality: 100,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      targetWidth: 320,
-      targetHeight: 240,
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true
-    };
 
     this.camera.getPicture(options).then((data) => {
       this.coverpage = "data:image/jpeg;base64," + data;

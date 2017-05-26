@@ -27,6 +27,7 @@ import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Camera } from '@ionic-native/camera';
+import { ActionSheet } from '@ionic-native/action-sheet';
 
 import { DbApiService } from './../shared/db-api.service';
 import { AuthService } from '../providers/auth-service';
@@ -86,7 +87,8 @@ export const firebaseConfig = {
     FileChooser,
     FilePath,
     AndroidPermissions,
-    Camera
+    Camera,
+    ActionSheet
   ]
 })
 export class AppModule { }

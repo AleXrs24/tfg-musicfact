@@ -24,7 +24,7 @@
       </ion-thumbnail>
       <h3>Cambiar portada</h3>
       <ion-fab item-right right>
-        <button ion-fab color="app" (click)="updateCoverPage()">
+        <button ion-fab color="app" (click)="selectOption()">
         <ion-icon name="camera"></ion-icon>
       </button>
       </ion-fab>
@@ -53,7 +53,7 @@
         <ion-label>
           <ion-icon name="pricetag"></ion-icon>
         </ion-label>
-        <ion-select interface="popover" placeholder="Elige etiqueta" [(ngModel)]="track.tag" name="tag" required>
+        <ion-select interface="actionsheet" placeholder="Elige etiqueta" [(ngModel)]="track.tag" name="tag" required>
           <ion-option value="Deep HousE">Deep House</ion-option>
           <ion-option value="Dance & EDM">Dance & EDM</ion-option>
           <ion-option value="Future">Future</ion-option>
