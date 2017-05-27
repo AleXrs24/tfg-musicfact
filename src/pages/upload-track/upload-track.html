@@ -5,94 +5,97 @@
   Ionic pages and navigation.
 -->
 
+<!--<ion-header *ngIf="progress_image == 0 && progress_audio == 0">-->
 <ion-header>
-
-  <ion-navbar *ngIf="progress == 0">
+  <ion-navbar>
     <ion-title>Subir pista</ion-title>
   </ion-navbar>
-  <ion-navbar *ngIf="progress != 0" hideBackButton="true">
+  <!--<ion-navbar *ngIf="progress_image != 0 || progress_audio != 0" hideBackButton="true">
     <ion-title>Subiendo...</ion-title>
-  </ion-navbar>
+  </ion-navbar>-->
 
 </ion-header>
 
 <ion-content>
-  <div *ngIf="progress == 0">
-    <ion-item no-lines>
-      <ion-thumbnail item-left>
-        <img src="{{coverpage}}">
-      </ion-thumbnail>
-      <h3>Cambiar portada</h3>
-      <ion-fab item-right right>
-        <button ion-fab color="app" (click)="selectOption()">
+  <!--<div *ngIf="progress_image == 0 && progress_audio == 0">-->
+  <ion-item no-lines>
+    <ion-thumbnail item-left>
+      <img src="{{coverpage}}">
+    </ion-thumbnail>
+    <h3>Cambiar portada</h3>
+    <ion-fab item-right right>
+      <button ion-fab color="app" (click)="selectOption()">
         <ion-icon name="camera"></ion-icon>
       </button>
-      </ion-fab>
-    </ion-item>
+    </ion-fab>
+  </ion-item>
 
-    <ion-item no-lines>
-      <button ion-button round icon-left color="app" (click)="loadTrack()">
+  <ion-item no-lines>
+    <button ion-button round icon-left color="app" (click)="loadTrack()">
       <ion-icon name="pulse"></ion-icon>
       ELEGIR AUDIO
     </button>
+  </ion-item>
+
+  <form (ngSubmit)="uploadTrack()" #uploadTrackForm="ngForm">
+
+    <ion-item>
+      <ion-input type="text" placeholder="Ruta del archivo" value="{{nativepath}}" [(ngModel)]="nativepath" name="nativepath" readonly
+        required></ion-input>
     </ion-item>
 
-    <form (ngSubmit)="uploadTrack()" #uploadTrackForm="ngForm">
+    <ion-item>
+      <ion-label floating>Título de la pista</ion-label>
+      <ion-input type="text" maxlength="40" minlength="4" [(ngModel)]="track.title" name="title" required></ion-input>
+    </ion-item>
 
+    <ion-item>
+      <ion-label>
+        <ion-icon name="pricetag"></ion-icon>
+      </ion-label>
+      <ion-select [selectOptions]="selectOptions" placeholder="Elige etiqueta" [(ngModel)]="track.tag" name="tag" required>
+        <ion-option value="Deep House">Deep House</ion-option>
+        <ion-option value="Dance & EDM">Dance & EDM</ion-option>
+        <ion-option value="Future">Future</ion-option>
+        <ion-option value="Techno">Techno</ion-option>
+        <ion-option value="Pop">Pop</ion-option>
+        <ion-option value="Electronic">Electronic</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-list radio-group [(ngModel)]="track.privacy" name="privacy" required>
+      <ion-list-header>
+        La pista será:
+      </ion-list-header>
       <ion-item>
-        <ion-input type="text" placeholder="Ruta del archivo" value="{{nativepath}}" [(ngModel)]="nativepath" name="nativepath" readonly
-          required></ion-input>
+        <ion-label>Pública</ion-label>
+        <ion-radio color="app" value="Pública" checked></ion-radio>
       </ion-item>
-
       <ion-item>
-        <ion-label floating>Título de la pista</ion-label>
-        <ion-input type="text" maxlength="40" minlength="4" [(ngModel)]="track.title" name="title" required></ion-input>
+        <ion-label>Privada</ion-label>
+        <ion-radio color="app" value="Privada"></ion-radio>
       </ion-item>
+    </ion-list>
 
-      <ion-item>
-        <ion-label>
-          <ion-icon name="pricetag"></ion-icon>
-        </ion-label>
-        <ion-select interface="actionsheet" placeholder="Elige etiqueta" [(ngModel)]="track.tag" name="tag" required>
-          <ion-option value="Deep HousE">Deep House</ion-option>
-          <ion-option value="Dance & EDM">Dance & EDM</ion-option>
-          <ion-option value="Future">Future</ion-option>
-          <ion-option value="Techno">Techno</ion-option>
-          <ion-option value="Pop">Pop</ion-option>
-          <ion-option value="Electronic">Electronic</ion-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-list radio-group [(ngModel)]="track.privacy" name="privacy" required>
-        <ion-list-header>
-          La pista será:
-        </ion-list-header>
-        <ion-item>
-          <ion-label>Pública</ion-label>
-          <ion-radio color="app" value="Pública" checked="true"></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Privada</ion-label>
-          <ion-radio color="app" value="Privada"></ion-radio>
-        </ion-item>
-      </ion-list>
-
-      <ion-fab center>
-        <button ion-fab color="app" type="submit" [disabled]="!uploadTrackForm.form.valid">
+    <ion-fab center>
+      <button ion-fab color="app" type="submit" [disabled]="!uploadTrackForm.form.valid">
         <ion-icon name="cloud-upload"></ion-icon>
       </button>
-      </ion-fab>
+    </ion-fab>
 
-    </form>
-  </div>
-  <div *ngIf="progress != 0">
+  </form>
+  <!--</div>
+  <div *ngIf="progress_image != 0 || progress_audio != 0">
+    <div *ngIf="newCoverPage">
+      <h3>Portada</h3>
+      <progress-bar [progress]="progress_image"></progress-bar>
+    </div>
+    <h3>Audio</h3>
+    <progress-bar [progress]="progress_audio"></progress-bar>
     <ion-fab center>
       <button ion-fab color="app" (click)="cancelUpload()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-fab>
-    <ion-footer>
-      <progress-bar [progress]="progress"></progress-bar>
-    </ion-footer>
-  </div>
+  </div>-->
 </ion-content>

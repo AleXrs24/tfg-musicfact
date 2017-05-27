@@ -12,7 +12,6 @@ import { Profile } from './../pages/profile/profile';
 import { UsersList } from './../pages/users-list/users-list';
 import { Comments } from './../pages/comments/comments';
 import { UploadTrack } from './../pages/upload-track/upload-track';
-import { ChooseMethod } from './../pages/choose-method/choose-method';
 
 import { ProgressBar } from './../components/progress-bar/progress-bar';
 
@@ -53,8 +52,7 @@ export const firebaseConfig = {
     UsersList,
     Comments,
     UploadTrack,
-    ProgressBar,
-    ChooseMethod
+    ProgressBar
   ],
   imports: [
     BrowserModule,
@@ -74,8 +72,7 @@ export const firebaseConfig = {
     Profile,
     UsersList,
     Comments,
-    UploadTrack,
-    ChooseMethod
+    UploadTrack
   ],
   providers: [
     StatusBar,

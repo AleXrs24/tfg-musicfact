@@ -2,12 +2,12 @@
   <ion-list>
 
     <ion-item-divider class="divider" color="light"></ion-item-divider>
-    <ion-item no-lines>
+    <ion-item no-lines (click)="profileView()">
       <ion-avatar item-left>
-        <img class="profile-img" src="" />
+        <img class="profile-img" src="{{userImage}}">
       </ion-avatar>
-      <h2></h2>
-      <p></p>
+      <h2>{{userName}}</h2>
+      <p>Ver perfil</p>
     </ion-item>
     <ion-item-divider class="divider" color="light"></ion-item-divider>
     <ion-item>Notificaciones</ion-item>

@@ -30,7 +30,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     let loader = this.lc.create({
-      content: 'Por favor espera...'
+      content: 'Cargando...'
     });
     loader.present().then(() => {
       this.db.getUsers().subscribe(resp => {
