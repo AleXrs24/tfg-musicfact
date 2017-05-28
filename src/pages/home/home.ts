@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, PopoverController } from 'ionic-angular';
+import { NavController, LoadingController, ModalController } from 'ionic-angular';
 
 import { DbApiService } from './../../shared/db-api.service';
 import { AuthService } from '../../providers/auth-service';
@@ -25,7 +25,7 @@ export class HomePage {
   userData: any[] = [];
 
   constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService,
-    private lc: LoadingController, private po: PopoverController) {
+    private lc: LoadingController, private modal: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -108,17 +108,17 @@ export class HomePage {
   }
 
   comments(track) {
-    let popover = this.po.create(Comments, { track_id: track });
-    let ev = {
-      target: {
-        getBoundingClientRect: () => {
-          return {
-            top: '150'
-          };
-        }
-      }
-    };
-    popover.present({ev});
+    let modal = this.modal.create(Comments, { track_id: track });
+    // let ev = {
+    //   target: {
+    //     getBoundingClientRect: () => {
+    //       return {
+    //         top: '150'
+    //       };
+    //     }
+    //   }
+    // };
+    modal.present();
   }
 
   signInWithFacebook(): void {

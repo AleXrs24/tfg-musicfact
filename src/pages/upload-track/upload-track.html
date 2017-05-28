@@ -5,19 +5,13 @@
   Ionic pages and navigation.
 -->
 
-<!--<ion-header *ngIf="progress_image == 0 && progress_audio == 0">-->
 <ion-header>
   <ion-navbar>
     <ion-title>Subir pista</ion-title>
   </ion-navbar>
-  <!--<ion-navbar *ngIf="progress_image != 0 || progress_audio != 0" hideBackButton="true">
-    <ion-title>Subiendo...</ion-title>
-  </ion-navbar>-->
-
 </ion-header>
 
 <ion-content>
-  <!--<div *ngIf="progress_image == 0 && progress_audio == 0">-->
   <ion-item no-lines>
     <ion-thumbnail item-left>
       <img src="{{coverpage}}">
@@ -84,18 +78,5 @@
     </ion-fab>
 
   </form>
-  <!--</div>
-  <div *ngIf="progress_image != 0 || progress_audio != 0">
-    <div *ngIf="newCoverPage">
-      <h3>Portada</h3>
-      <progress-bar [progress]="progress_image"></progress-bar>
-    </div>
-    <h3>Audio</h3>
-    <progress-bar [progress]="progress_audio"></progress-bar>
-    <ion-fab center>
-      <button ion-fab color="app" (click)="cancelUpload()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-fab>
-  </div>-->
+  
 </ion-content>

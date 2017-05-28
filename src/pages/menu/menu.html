@@ -1,7 +1,7 @@
 <ion-content>
   <ion-list>
 
-    <ion-item-divider class="divider" color="light"></ion-item-divider>
+    <ion-item-divider color="light"></ion-item-divider>
     <ion-item no-lines (click)="profileView()">
       <ion-avatar item-left>
         <img class="profile-img" src="{{userImage}}">
@@ -10,12 +10,12 @@
       <p>Ver perfil</p>
     </ion-item>
     <ion-item-divider class="divider" color="light"></ion-item-divider>
-    <ion-item>Notificaciones</ion-item>
-    <ion-item no-lines (click)="uploadTrack()">Subir pista de audio</ion-item>
+    <ion-item (click)="uploadTrack()">Subir pista de audio</ion-item>
+    <ion-item no-lines>Notificaciones</ion-item>
     <ion-item-divider class="divider" color="light"></ion-item-divider>
     <ion-item no-lines>Configuración de notificaciones</ion-item>
     <ion-item-divider class="divider" color="light"></ion-item-divider>
-    <ion-item no-lines (click)="logout()">Cerrar Sesión</ion-item>
+    <ion-item no-lines (click)="logout()">Cerrar sesión</ion-item>
     <ion-item class="copyright" color="light">Version XXXX.XX.XX-release de la app</ion-item>
 
   </ion-list>

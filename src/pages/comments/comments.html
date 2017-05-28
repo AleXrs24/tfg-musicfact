@@ -1,13 +1,24 @@
-<ion-content>
-  <form (ngSubmit)="addComment()" #addCommentForm="ngForm">
-    <ion-item>
-      <ion-textarea maxlength="100" placeholder="Escribe aquí tu comentario" [(ngModel)]="comment" name="comment" required></ion-textarea>
-      <button item-right ion-button clear small color="app" type="submit" [disabled]="!addCommentForm.form.valid">
-      <ion-icon name="paper-plane"></ion-icon>
-    </button>
-    </ion-item>
-  </form>
+<ion-header>
+  <ion-row>
+    <ion-col col-1>
+      <button color="app" ion-button clear (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col>
+      <form (ngSubmit)="addComment()" #addCommentForm="ngForm">
+        <ion-item>
+          <ion-textarea maxlength="100" placeholder="Escribe aquí tu comentario" [(ngModel)]="comment" name="comment" required></ion-textarea>
+          <button item-right ion-button clear small color="app" type="submit" [disabled]="!addCommentForm.form.valid">
+          <ion-icon name="paper-plane"></ion-icon>
+        </button>
+        </ion-item>
+      </form>
+    </ion-col>
+  </ion-row>
+</ion-header>
 
+<ion-content>
   <ion-list>
     <ion-item *ngFor="let comment of comments" text-wrap>
       <ion-row>
@@ -22,9 +33,9 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col offset-7>
+        <ion-col offset-8>
           <ion-note class="time">
-            {{ comment.time | date:'dd/MM/yy' }} - {{ comment.time | date:'h:mm a' }}
+            {{ comment.time | date:'dd/MM/yy' }} - {{ comment.time | date:'HH:mm' }}
           </ion-note>
         </ion-col>
       </ion-row>
