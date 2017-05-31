@@ -127,12 +127,10 @@ export class UploadTrack {
       audio_blob: this.audio_blob, coverpageB64: this.coverpageB64,
       newCoverPage: this.newCoverPage, track: this.track, coverpage: this.coverpage
     });
-
+    modal.present();
     modal.onDidDismiss(() => {
       this.navCtrl.popToRoot();
     });
-    modal.present();
-
   }
 
 }

@@ -13,6 +13,8 @@ import { UsersList } from './../pages/users-list/users-list';
 import { Comments } from './../pages/comments/comments';
 import { UploadTrack } from './../pages/upload-track/upload-track';
 import { Uploading } from './../pages/uploading/uploading';
+import { Lists } from './../pages/lists/lists';
+import { TracksList } from './../pages/tracks-list/tracks-list';
 
 import { ProgressBar } from './../components/progress-bar/progress-bar';
 
@@ -54,7 +56,9 @@ export const firebaseConfig = {
     Comments,
     UploadTrack,
     ProgressBar,
-    Uploading
+    Uploading,
+    Lists,
+    TracksList
   ],
   imports: [
     BrowserModule,
@@ -75,7 +79,9 @@ export const firebaseConfig = {
     UsersList,
     Comments,
     UploadTrack,
-    Uploading
+    Uploading,
+    Lists,
+    TracksList
   ],
   providers: [
     StatusBar,

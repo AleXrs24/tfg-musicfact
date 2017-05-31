@@ -36,5 +36,44 @@ page-profile {
             object-fit: cover;
         }
 
+        .card-ntracks {
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            left: 4%;
+            bottom: 5%;
+            width: 75px;
+            height: 75px;
+            border-radius: 100%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 13px;
+            padding-right: 13px;
+            font-size: 1.0em;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+        }
+
+        .card-title-list {
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            width: 100%;
+            top: 15%;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+        }
+
+        .card-subtitle-list {
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            width: 100%;
+            top: 5%;
+            font-size: 1.0em;
+            color: #7C7C7C;
+            text-align: center;
+        }
+
     }
 }

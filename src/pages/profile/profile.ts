@@ -1,8 +1,11 @@
+import { Lists } from './../lists/lists';
+import { Comments } from './../comments/comments';
 import { UsersList } from './../users-list/users-list';
 import { AuthService } from './../../providers/auth-service';
 import { DbApiService } from './../../shared/db-api.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, AlertController } from 'ionic-angular';
+import { TracksList } from './../tracks-list/tracks-list';
 import * as _ from 'lodash';
 
 /**
@@ -31,8 +34,11 @@ export class Profile {
   isFollowed: boolean;
   following: any[];
   currentUser: any;
+  lists: any[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private auth: AuthService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private auth: AuthService,
+    private modal: ModalController, private as: ActionSheetController, private ac: AlertController) {
+
     this.user = navParams.data;
   }
 
@@ -48,6 +54,7 @@ export class Profile {
             return track.$key == item.$key;
           }))
         }
+        this.tracks_filter.reverse();
       })
 
       this.db.getLikes().subscribe(resp => {
@@ -76,6 +83,15 @@ export class Profile {
 
     });
 
+    //-----------------------------------------------------------------------
+
+    this.db.getLists(this.currentUser).subscribe(resp => {
+      this.lists = resp;
+      this.lists.reverse();
+    });
+
+    //----------------------------------------------------------------------
+
     this.db.getNumFollowers(this.user.$key).subscribe(resp => {
       this.nfollowers = resp;
       this.nfollowers = this.nfollowers.length;
@@ -93,6 +109,92 @@ export class Profile {
       })
     })
 
+  }
+
+  more(track, coverpage) {
+    let more = this.as.create({
+      title: 'Más opciones',
+      buttons: [
+        {
+          text: 'Añadir a una lista',
+          icon: 'add-circle',
+          handler: () => {
+            let addToList = this.ac.create({
+              title: 'Añadir a una lista',
+              buttons: [
+                {
+                  text: 'Seleccionar lista',
+                  handler: data => {
+                    let lists = this.modal.create(Lists, { track_id: track });
+                    lists.present();
+                  }
+                },
+                {
+                  text: 'Crear nueva lista',
+                  handler: () => {
+                    let newList = this.ac.create({
+                      title: 'Crear nueva lista',
+                      inputs: [
+                        {
+                          name: 'title',
+                          placeholder: 'Introduce el título de la lista',
+                          type: 'text'
+                        },
+                      ],
+                      buttons: [
+                        {
+                          text: 'Cancelar',
+                          role: 'cancel',
+                          handler: data => {
+                            console.log('Cancel clicked');
+                          }
+                        },
+                        {
+                          text: 'Guardar',
+                          handler: data => {
+                            if (data.title != "") {
+                              this.db.newList(data.title, track, coverpage);
+                            } else {
+                              return false;
+                            }
+                          }
+                        }
+                      ]
+                    });
+                    newList.present();
+                  }
+                }
+              ]
+            });
+            addToList.present();
+          }
+        },
+        {
+          text: 'Share',
+          icon: 'share',
+          cssClass: 'share',
+          handler: () => {
+            console.log('Share clicked');
+          }
+        },
+        {
+          text: 'Play',
+          icon: 'arrow-dropright-circle',
+          handler: () => {
+            console.log('Play clicked');
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel', // will always sort to be on the bottom
+          icon: 'close',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    more.present();
   }
 
   likeTrack(track) {
@@ -121,6 +223,15 @@ export class Profile {
 
   viewUsers(user, follow) {
     this.navCtrl.push(UsersList, { dataUser: user, dataFollow: follow });
+  }
+
+  comments(track) {
+    let modal = this.modal.create(Comments, { track_id: track });
+    modal.present();
+  }
+
+  goToTracksList(list, title) {
+    this.navCtrl.push(TracksList, { id: list, title: title });
   }
 
 }

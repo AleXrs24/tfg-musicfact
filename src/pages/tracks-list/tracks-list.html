@@ -1,0 +1,70 @@
+<!--
+  Generated template for the TracksList page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>{{title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="card-background-page">
+
+
+  <ion-list>
+
+    <ion-card *ngFor="let track of tracks_filter; let i = index">
+
+      <img class="image" src="{{track.cover_page}}">
+      <div class="card-title">{{track.title}}</div>
+      <div class="card-subtitle">{{track.artist}}</div>
+      <audio controls>
+        <source src="{{track.audio}}" type="audio/mp3">
+      </audio>
+      <ion-card-content>
+
+        <ion-note color="grey1">
+          #{{track.tag}}
+        </ion-note>
+
+      </ion-card-content>
+
+      <ion-row>
+        <ion-col col-3>
+          <button *ngIf="isLike[i]" color="grey2" ion-button icon-left clear (click)="disLikeTrack(track.$key)">
+          <ion-icon color="danger" name="heart"></ion-icon>
+          <div>{{track.likes}}</div>
+        </button>
+          <button *ngIf="!isLike[i]" color="grey2" ion-button icon-left clear (click)="likeTrack(track.$key)">
+          <ion-icon name="heart"></ion-icon>
+          <div>{{track.likes}}</div>
+        </button>
+        </ion-col>
+        <ion-col col-3>
+          <button *ngIf="isRepost[i]" color="grey2" ion-button icon-left clear (click)="unRepostTrack(track.$key)">
+          <ion-icon color="app" name="repeat"></ion-icon>
+          <div>{{track.reposts}}</div>
+        </button>
+          <button *ngIf="!isRepost[i]" color="grey2" ion-button icon-left clear (click)="repostTrack(track.$key)">
+          <ion-icon name="repeat"></ion-icon>
+          <div>{{track.reposts}}</div>
+        </button>
+        </ion-col>
+        <ion-col col-3>
+          <button color="grey2" ion-button icon-left clear (click)="comments(track.$key)">
+          <ion-icon name="chatboxes"></ion-icon>
+          <div>{{track.comments}}</div>
+        </button>
+        </ion-col>
+        <ion-col col-3>
+          <button color="grey2" ion-button icon-right clear (click)="more(track.$key, track.cover_page)">
+          <ion-icon name="more"></ion-icon>
+        </button>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-card>
+  </ion-list>
+</ion-content>

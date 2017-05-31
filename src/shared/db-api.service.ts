@@ -5,6 +5,7 @@ import { AuthService } from './../providers/auth-service';
 @Injectable()
 export class DbApiService {
   tracks: FirebaseListObservable<any[]>;
+  lists: FirebaseListObservable<any[]>;
   likes: FirebaseListObservable<any[]>;
   reposts: FirebaseListObservable<any[]>;
   users: FirebaseListObservable<any[]>;
@@ -15,6 +16,7 @@ export class DbApiService {
   nfollowers: FirebaseListObservable<any[]>;
   nfollowing: FirebaseListObservable<any[]>;
   comments: FirebaseListObservable<any[]>;
+  tracksList: FirebaseListObservable<any[]>;
 
   constructor(private db: AngularFireDatabase, private auth: AuthService) {
 
@@ -33,6 +35,16 @@ export class DbApiService {
   getTracks(): FirebaseListObservable<any[]> {
     this.tracks = this.db.list('/tracks');
     return this.tracks;
+  }
+
+  getTracksFromList(idlist) {
+    this.tracksList = this.db.list('/lists/' + this.getCurrentUser().uid + '/' + idlist + '/tracks');
+    return this.tracksList;
+  }
+
+  getLists(data): FirebaseListObservable<any[]> {
+    this.lists = this.db.list('/lists/' + data);
+    return this.lists;
   }
 
   getTracksReposts(data): FirebaseListObservable<any[]> {
@@ -159,6 +171,27 @@ export class DbApiService {
     this.db.database.ref('/users/' + user_id + '/followers/' + currentUserId).remove();
   }
 
+  newList(title, trackid, coverpage) {
+    let currentUser = this.getCurrentUser();
+    this.getLists(currentUser.uid);
+    let list_id;
+    list_id = this.lists.push({
+      coverpage: coverpage, creator: currentUser.displayName, ntracks: 1, title: title
+    }).key;
+
+    this.db.database.ref('/lists/' + currentUser.uid + '/' + list_id + '/tracks/').child(trackid).set(trackid);
+  }
+
+  addTrackToList(idlist, idtrack) {
+    let currentUserId = this.auth.getCurrentUser().uid;
+    this.db.database.ref('/lists/' + currentUserId + '/' + idlist + '/tracks/').child(idtrack).set(idtrack);
+    this.db.database.ref('/lists/' + currentUserId + '/' + idlist).once('value').then((snapshot) => {
+      this.db.list('/lists/' + currentUserId).update(idlist, {
+        ntracks: snapshot.val().ntracks + 1
+      })
+    })
+  }
+
   uploadToDatabase(artist, artist_img, audio, coverpage, track) {
     let track_id;
     track_id = this.tracks.push({
@@ -167,7 +200,7 @@ export class DbApiService {
     }).key;
 
     this.db.database.ref('/users/' + this.auth.getCurrentUser().uid + '/tracks/').child(track_id).set(track_id);
-    
+
   }
 
 }

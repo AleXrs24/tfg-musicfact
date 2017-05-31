@@ -1,0 +1,15 @@
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of lists" text-wrap (click)="addTrackToList(item.$key)">
+      <ion-thumbnail item-left>
+        <img src="{{item.coverpage}}">
+      </ion-thumbnail>
+      <h2>{{item.title}}</h2>
+      <button color="app" ion-button item-right icon-left clear>
+        <ion-icon name="pulse"></ion-icon>
+        {{item.ntracks}}
+      </button>
+    </ion-item>
+  </ion-list>
+  <button color="app" ion-button full (click)="close()">Cerrar</button>
+</ion-content>

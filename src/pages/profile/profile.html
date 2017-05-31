@@ -38,6 +38,11 @@
       <ion-segment-button value="tracks">
         <ion-icon name="musical-notes"></ion-icon>
       </ion-segment-button>
+
+      <ion-segment-button value="lists">
+        <ion-icon name="albums"></ion-icon>
+      </ion-segment-button>
+
       <ion-segment-button value="data">
         <ion-icon name="information-circle"></ion-icon>
       </ion-segment-button>
@@ -46,6 +51,10 @@
 
   <div [ngSwitch]="profile">
     <ion-list *ngSwitchCase="'tracks'">
+      <ion-list-header>
+        <h2>Pistas</h2>
+      </ion-list-header>
+
       <ion-card *ngFor="let track of tracks_filter; let i = index">
 
         <img class="image" src="{{track.cover_page}}">
@@ -84,18 +93,33 @@
         </button>
           </ion-col>
           <ion-col col-3>
-            <button color="grey2" ion-button icon-left clear>
+            <button color="grey2" ion-button icon-left clear (click)="comments(track.$key)">
           <ion-icon name="chatboxes"></ion-icon>
           <div>{{track.comments}}</div>
         </button>
           </ion-col>
           <ion-col col-3>
-            <button color="grey2" ion-button icon-left clear>
-          <ion-icon name="share"></ion-icon>
+            <button color="grey2" ion-button icon-right clear (click)="more(track.$key, track.cover_page)">
+          <ion-icon name="more"></ion-icon>
         </button>
           </ion-col>
 
         </ion-row>
+
+      </ion-card>
+    </ion-list>
+    <ion-list *ngSwitchCase="'lists'">
+      <ion-list-header>
+        <h2>Listas</h2>
+      </ion-list-header>
+
+      <ion-card *ngFor="let list of lists" (click)="goToTracksList(list.$key, list.title)">
+
+        <img class="image" src="{{list.coverpage}}">
+        <div class="card-title-list">{{list.title}}</div>
+        <div class="card-subtitle-list">{{list.creator}}</div>
+        <div class="card-ntracks" *ngIf="list.ntracks == 1">{{list.ntracks}} PISTA</div>
+        <div class="card-ntracks" *ngIf="list.ntracks != 1">{{list.ntracks}} PISTAS</div>
 
       </ion-card>
     </ion-list>
