@@ -1,0 +1,30 @@
+page-start {
+    .auth-home {
+        background-image: url("../../../assets/img/start.jpg");
+        background-size: 100%;
+        background-position-y: 50%;
+
+        .logo {
+            height: 50%;
+            width: 100%;
+            .logo-icon {
+                text-align: center;
+                font-size: 40px;
+                padding-top: 30%;
+                color: white;
+            }
+        }
+
+        .sign-up-btn {
+            margin-top: 5%;
+            margin-left: 10%;
+            width: 35%;
+        }
+
+        .log-in-btn {
+            margin-top: 5%;
+            margin-left: 10%;
+            width: 35%;
+        }
+    }
+}

@@ -1,3 +1,4 @@
+import { Start } from './../auth/start/start';
 import { Component } from '@angular/core';
 import { NavController, LoadingController, ModalController, ActionSheetController, AlertController } from 'ionic-angular';
 
@@ -91,6 +92,10 @@ export class HomePage {
 
       });
     });
+  }
+
+  goToStart() {
+    this.navCtrl.push(Start);
   }
 
   likeTrack(track) {

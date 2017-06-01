@@ -1,0 +1,27 @@
+<ion-content class="signup">
+    <div class="content">
+
+        <button ion-button icon-left block color="facebook" class="social-btn" (click)="signupWithFacebook()">
+            <ion-icon name="logo-facebook"></ion-icon>
+            Registrarse con Facebook
+        </button>
+        <button ion-button icon-left block color="danger" class="social-btn" (click)="signupWithGoogle()">
+            <ion-icon name="logo-googleplus"></ion-icon>
+            Registrarse con Google+
+        </button>
+        <form (ngSubmit)="signup()" #signupForm="ngForm">
+            <ion-list inset>
+                <ion-item>
+                    <ion-input type="text" placeholder="Email" [(ngModel)]="form.email" name="email"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-input type="password" placeholder="Contraseña" [(ngModel)]="form.password" name="password"></ion-input>
+                </ion-item>
+            </ion-list>
+            <button ion-button color="primary" class="cancel-btn" (click)="close()">Cancelar</button>
+            <button ion-button color="app2" [disabled]="!signupForm.form.valid" class="signup-btn">Registrarse</button>
+        </form>
+
+    </div>
+</ion-content>
