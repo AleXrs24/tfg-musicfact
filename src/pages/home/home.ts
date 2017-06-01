@@ -123,7 +123,7 @@ export class HomePage {
     modal.present();
   }
 
-  more(track, coverpage) {
+  more(track) {
     let more = this.as.create({
       title: 'Más opciones',
       buttons: [
@@ -137,7 +137,7 @@ export class HomePage {
                 {
                   text: 'Seleccionar lista',
                   handler: data => {
-                    let lists = this.modal.create(Lists, { track_id: track });
+                    let lists = this.modal.create(Lists, { track: track });
                     lists.present();
                   }
                 },
@@ -183,7 +183,7 @@ export class HomePage {
                               privacy.addButton({
                                 text: 'Crear',
                                 handler: data => {
-                                  this.db.newList(data, track, coverpage, title);
+                                  this.db.newList(data, track.$key, track.cover_page, title);
                                 }
                               });
                               privacy.present();

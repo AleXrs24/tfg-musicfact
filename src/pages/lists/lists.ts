@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ToastController, AlertController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
 
 import * as _ from 'lodash';
@@ -16,12 +16,12 @@ import * as _ from 'lodash';
 })
 export class Lists {
   tracksList: any;
-  trackId: any;
+  track: any;
   lists: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private vc: ViewController, private db: DbApiService,
-    private toast: ToastController) {
+    private toast: ToastController, private ac: AlertController) {
 
-    this.trackId = this.navParams.get("track_id");
+    this.track = this.navParams.get("track");
   }
 
   ionViewDidLoad() {
@@ -31,28 +31,36 @@ export class Lists {
     });
   }
 
-  addTrackToList(idlist) {
-
-    this.db.getTracksFromList(idlist).subscribe(resp => {
-      this.tracksList = resp;
-    });
-
-    let value: boolean;
-    value = _.some(this.tracksList, (item) => {
-      return this.trackId == item.$key;
-    })
-    if (value) {
-      let toast = this.toast.create({
-        message: 'Esta canción ya existe en la lista seleccionada',
-        duration: 3000,
-        position: 'bottom',
-        showCloseButton: true,
-        closeButtonText: 'Ok'
+  addTrackToList(list) {
+    if (list.privacy == "Pública" && this.track.privacy == "Privada") {
+      let alert = this.ac.create({
+        title: '¡Atención!',
+        subTitle: 'No se puede añadir una pista privada dentro de una lista pública',
+        buttons: ['Ok']
       });
-      toast.present();
+      alert.present();
     } else {
-      this.db.addTrackToList(idlist, this.trackId);
-      this.vc.dismiss();
+      this.db.getTracksFromList(list.$key).subscribe(resp => {
+        this.tracksList = resp;
+      });
+
+      let value: boolean;
+      value = _.some(this.tracksList, (item) => {
+        return this.track.$key == item.$key;
+      })
+      if (value) {
+        let toast = this.toast.create({
+          message: 'Esta canción ya existe en la lista seleccionada',
+          duration: 3000,
+          position: 'bottom',
+          showCloseButton: true,
+          closeButtonText: 'Ok'
+        });
+        toast.present();
+      } else {
+        this.db.addTrackToList(list.$key, this.track.$key);
+        this.vc.dismiss();
+      }
     }
   }
 

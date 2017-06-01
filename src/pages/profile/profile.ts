@@ -117,7 +117,7 @@ export class Profile {
 
   }
 
-  more(track, coverpage) {
+  more(track) {
     let more = this.as.create({
       title: 'Más opciones',
       buttons: [
@@ -131,7 +131,7 @@ export class Profile {
                 {
                   text: 'Seleccionar lista',
                   handler: data => {
-                    let lists = this.modal.create(Lists, { track_id: track });
+                    let lists = this.modal.create(Lists, { track: track });
                     lists.present();
                   }
                 },
@@ -177,7 +177,16 @@ export class Profile {
                               privacy.addButton({
                                 text: 'Crear',
                                 handler: data => {
-                                  this.db.newList(data, track, coverpage, title);
+                                  if (data == 'Pública' && track.privacy == 'Privada') {
+                                    let alert = this.ac.create({
+                                      title: '¡Atención!',
+                                      subTitle: 'No se puede añadir una pista privada dentro de una lista pública',
+                                      buttons: ['Ok']
+                                    });
+                                    alert.present();
+                                  } else {
+                                    this.db.newList(data, track.$key, track.cover_page, title);
+                                  }
                                 }
                               });
                               privacy.present();
@@ -233,7 +242,29 @@ export class Profile {
   }
 
   repostTrack(track) {
-    this.db.repostTrack(track);
+    if (track.privacy == 'Privada') {
+      let confirm = this.ac.create({
+        title: 'Esta pista ha sido creada como privada',
+        message: '¿Desea repostearla a sus seguidores y convertirla en pública?',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+              console.log('No clicked');
+            }
+          },
+          {
+            text: 'Sí',
+            handler: () => {
+              this.db.repostPrivateTrack(track.$key);
+            }
+          }
+        ]
+      });
+      confirm.present();
+    } else {
+      this.db.repostTrack(track.$key);
+    }
   }
 
   unRepostTrack(track) {

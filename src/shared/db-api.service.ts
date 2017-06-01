@@ -126,6 +126,13 @@ export class DbApiService {
     })
   }
 
+  repostPrivateTrack(track_id) {
+    this.repostTrack(track_id);
+    this.db.list('/tracks').update(track_id, {
+      privacy: 'Pública'
+    });
+  }
+
   unRepostTrack(track_id) {
     this.db.database.ref('/users/' + this.auth.getCurrentUser().uid + '/reposts/' + track_id).remove();
     this.db.database.ref('/tracks/' + track_id).once('value').then((snapshot) => {

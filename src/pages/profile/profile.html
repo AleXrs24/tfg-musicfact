@@ -64,11 +64,15 @@
           <source src="{{track.audio}}" type="audio/mp3">
         </audio>
         <ion-card-content>
+          <ion-item no-padding>
+            <ion-note item-start color="grey1">
+              #{{track.tag}}
+            </ion-note>
 
-          <ion-note color="grey1">
-            #{{track.tag}}
-          </ion-note>
-
+            <ion-note item-end *ngIf="track.privacy == 'Privada'" color="grey1">
+              <ion-icon name="lock"></ion-icon>
+            </ion-note>
+          </ion-item>
         </ion-card-content>
 
         <ion-row>
@@ -87,7 +91,7 @@
           <ion-icon color="app" name="repeat"></ion-icon>
           <div>{{track.reposts}}</div>
         </button>
-            <button *ngIf="!isRepost[i]" color="grey2" ion-button icon-left clear (click)="repostTrack(track.$key)">
+            <button *ngIf="!isRepost[i]" color="grey2" ion-button icon-left clear (click)="repostTrack(track)">
           <ion-icon name="repeat"></ion-icon>
           <div>{{track.reposts}}</div>
         </button>
@@ -99,7 +103,7 @@
         </button>
           </ion-col>
           <ion-col col-3>
-            <button color="grey2" ion-button icon-right clear (click)="more(track.$key, track.cover_page)">
+            <button color="grey2" ion-button icon-right clear (click)="more(track)">
           <ion-icon name="more"></ion-icon>
         </button>
           </ion-col>
@@ -120,7 +124,9 @@
         <div class="card-subtitle-list">{{list.creator}}</div>
         <div class="card-ntracks-list" *ngIf="list.ntracks == 1">{{list.ntracks}} PISTA</div>
         <div class="card-ntracks-list" *ngIf="list.ntracks != 1">{{list.ntracks}} PISTAS</div>
-        <div class="card-privacy-list" *ngIf="list.privacy == 'Privada'"><ion-icon name="lock"></ion-icon></div>
+        <div class="card-privacy-list" *ngIf="list.privacy == 'Privada'">
+          <ion-icon name="lock"></ion-icon>
+        </div>
 
       </ion-card>
     </ion-list>
