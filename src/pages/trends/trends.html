@@ -1,0 +1,32 @@
+<!--
+  Generated template for the Trends page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Tendencias</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      Pie Chart
+    </ion-card-header>
+    <ion-card-content>
+      <button ion-button block (click)="update()">Actualizar</button>
+      <canvas baseChart
+              [data]="chartData"
+              [labels]="chartLabels"
+              [chartType]="chartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)">
+      </canvas>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

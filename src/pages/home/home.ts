@@ -137,7 +137,7 @@ export class HomePage {
                 {
                   text: 'Seleccionar lista',
                   handler: data => {
-                    let lists = this.modal.create(Lists, {track_id: track});
+                    let lists = this.modal.create(Lists, { track_id: track });
                     lists.present();
                   }
                 },
@@ -151,7 +151,7 @@ export class HomePage {
                           name: 'title',
                           placeholder: 'Introduce el título de la lista',
                           type: 'text'
-                        },
+                        }
                       ],
                       buttons: [
                         {
@@ -162,10 +162,31 @@ export class HomePage {
                           }
                         },
                         {
-                          text: 'Guardar',
+                          text: 'Siguiente',
                           handler: data => {
                             if (data.title != "") {
-                              this.db.newList(data.title, track, coverpage);
+                              let title = data.title;
+                              let privacy = this.ac.create();
+                              privacy.setTitle('¿Cómo será la lista?');
+                              privacy.addInput({
+                                type: 'radio',
+                                label: 'Pública',
+                                value: 'Pública',
+                                checked: true
+                              });
+                              privacy.addInput({
+                                type: 'radio',
+                                label: 'Privada',
+                                value: 'Privada'
+                              });
+                              privacy.addButton('Cancelar');
+                              privacy.addButton({
+                                text: 'Crear',
+                                handler: data => {
+                                  this.db.newList(data, track, coverpage, title);
+                                }
+                              });
+                              privacy.present();
                             } else {
                               return false;
                             }

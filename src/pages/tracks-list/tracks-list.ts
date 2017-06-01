@@ -22,14 +22,15 @@ export class TracksList {
   title: any;
   tracks: any[];
   tracks_list: any[];
+  tracks_list_sort: any[];
   tracks_filter: any[] = [];
   likes: any[];
   isLike: any[] = [];
   reposts: any[];
   isRepost: any[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private lc: LoadingController, 
-  private modal: ModalController, private as: ActionSheetController, private ac: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private lc: LoadingController,
+    private modal: ModalController, private as: ActionSheetController, private ac: AlertController) {
     this.list = this.navParams.get("id");
     this.title = this.navParams.get("title");
   }
@@ -45,9 +46,9 @@ export class TracksList {
 
         this.db.getTracksFromList(this.list).subscribe(resp => {
           this.tracks_list = resp;
+          this.tracks_list_sort = _.chain(this.tracks_list).sortBy('time').value();
           this.tracks_filter = [];
-
-          for (let track of this.tracks_list) {
+          for (let track of this.tracks_list_sort) {
             this.tracks_filter.push(_.find(this.tracks, (item) => {
               return item.$key == track.$key;
             }));
@@ -113,7 +114,7 @@ export class TracksList {
                           name: 'title',
                           placeholder: 'Introduce el título de la lista',
                           type: 'text'
-                        },
+                        }
                       ],
                       buttons: [
                         {
@@ -124,10 +125,31 @@ export class TracksList {
                           }
                         },
                         {
-                          text: 'Guardar',
+                          text: 'Siguiente',
                           handler: data => {
                             if (data.title != "") {
-                              this.db.newList(data.title, track, coverpage);
+                              let title = data.title;
+                              let privacy = this.ac.create();
+                              privacy.setTitle('¿Cómo será la lista?');
+                              privacy.addInput({
+                                type: 'radio',
+                                label: 'Pública',
+                                value: 'Pública',
+                                checked: true
+                              });
+                              privacy.addInput({
+                                type: 'radio',
+                                label: 'Privada',
+                                value: 'Privada'
+                              });
+                              privacy.addButton('Cancelar');
+                              privacy.addButton({
+                                text: 'Crear',
+                                handler: data => {
+                                  this.db.newList(data, track, coverpage, title);
+                                }
+                              });
+                              privacy.present();
                             } else {
                               return false;
                             }

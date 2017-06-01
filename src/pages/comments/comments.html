@@ -32,8 +32,8 @@
           <p>{{comment.body}}</p>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col offset-8>
+      <ion-row justify-content-end>
+        <ion-col col-auto>
           <ion-note class="time">
             {{ comment.time | date:'dd/MM/yy' }} - {{ comment.time | date:'HH:mm' }}
           </ion-note>

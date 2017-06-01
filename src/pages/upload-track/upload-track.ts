@@ -65,8 +65,8 @@ export class UploadTrack {
           sourceType: this.camera.PictureSourceType.CAMERA,
           destinationType: this.camera.DestinationType.DATA_URL,
           encodingType: this.camera.EncodingType.JPEG,
-          // targetWidth: 320,
-          // targetHeight: 240,
+          targetWidth: 400,
+          targetHeight: 300,
           mediaType: this.camera.MediaType.PICTURE,
           correctOrientation: true
         };
@@ -77,8 +77,8 @@ export class UploadTrack {
           sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
           destinationType: this.camera.DestinationType.DATA_URL,
           encodingType: this.camera.EncodingType.JPEG,
-          // targetWidth: 320,
-          // targetHeight: 240,
+          targetWidth: 400,
+          targetHeight: 300,
           mediaType: this.camera.MediaType.PICTURE,
           correctOrientation: true
         };

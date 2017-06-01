@@ -15,7 +15,7 @@
   <ion-navbar color="white">
     <ion-title>Perfil</ion-title>
   </ion-navbar>
-  <ion-item no-lines>
+  <ion-item no-lines text-wrap>
     <ion-avatar item-left>
       <img class="profile-img" src="{{user.profile_image}}" />
     </ion-avatar>
@@ -113,13 +113,14 @@
         <h2>Listas</h2>
       </ion-list-header>
 
-      <ion-card *ngFor="let list of lists" (click)="goToTracksList(list.$key, list.title)">
+      <ion-card *ngFor="let list of lists_filter" (click)="goToTracksList(list.$key, list.title)">
 
         <img class="image" src="{{list.coverpage}}">
         <div class="card-title-list">{{list.title}}</div>
         <div class="card-subtitle-list">{{list.creator}}</div>
-        <div class="card-ntracks" *ngIf="list.ntracks == 1">{{list.ntracks}} PISTA</div>
-        <div class="card-ntracks" *ngIf="list.ntracks != 1">{{list.ntracks}} PISTAS</div>
+        <div class="card-ntracks-list" *ngIf="list.ntracks == 1">{{list.ntracks}} PISTA</div>
+        <div class="card-ntracks-list" *ngIf="list.ntracks != 1">{{list.ntracks}} PISTAS</div>
+        <div class="card-privacy-list" *ngIf="list.privacy == 'Privada'"><ion-icon name="lock"></ion-icon></div>
 
       </ion-card>
     </ion-list>

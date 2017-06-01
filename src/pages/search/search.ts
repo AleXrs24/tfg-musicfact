@@ -60,6 +60,7 @@ export class SearchPage {
       this.tracks = this.tracks.filter((track) => {
         return (track.title.toLowerCase().indexOf(val.toLowerCase()) > -1);
       });
+      console.log(this.tracks);
       this.users = this.users.filter((user) => {
         return (user.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       });

@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
 import { UploadTrack } from './../upload-track/upload-track';
 import { Profile } from './../profile/profile';
+import { Trends } from './../trends/trends';
 import * as _ from 'lodash';
 
 @Component({
@@ -36,5 +37,9 @@ export class MenuPage {
 
   profileView() {
     this.navCtrl.push(Profile, this.userData);
+  }
+
+  trends() {
+    this.navCtrl.push(Trends);
   }
 }

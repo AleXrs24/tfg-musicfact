@@ -171,20 +171,20 @@ export class DbApiService {
     this.db.database.ref('/users/' + user_id + '/followers/' + currentUserId).remove();
   }
 
-  newList(title, trackid, coverpage) {
+  newList(privacy, trackid, coverpage, title) {
     let currentUser = this.getCurrentUser();
     this.getLists(currentUser.uid);
     let list_id;
     list_id = this.lists.push({
-      coverpage: coverpage, creator: currentUser.displayName, ntracks: 1, title: title
+      coverpage: coverpage, creator: currentUser.displayName, ntracks: 1, title: title, privacy: privacy
     }).key;
 
-    this.db.database.ref('/lists/' + currentUser.uid + '/' + list_id + '/tracks/').child(trackid).set(trackid);
+    this.db.database.ref('/lists/' + currentUser.uid + '/' + list_id + '/tracks/').child(trackid).child('time').set(new Date().getTime());
   }
 
   addTrackToList(idlist, idtrack) {
     let currentUserId = this.auth.getCurrentUser().uid;
-    this.db.database.ref('/lists/' + currentUserId + '/' + idlist + '/tracks/').child(idtrack).set(idtrack);
+    this.db.database.ref('/lists/' + currentUserId + '/' + idlist + '/tracks/').child(idtrack).child('time').set(new Date().getTime());
     this.db.database.ref('/lists/' + currentUserId + '/' + idlist).once('value').then((snapshot) => {
       this.db.list('/lists/' + currentUserId).update(idlist, {
         ntracks: snapshot.val().ntracks + 1
@@ -194,12 +194,17 @@ export class DbApiService {
 
   uploadToDatabase(artist, artist_img, audio, coverpage, track) {
     let track_id;
+    let currentUserId = this.auth.getCurrentUser().uid;
     track_id = this.tracks.push({
       artist: artist, artist_img: artist_img, audio: audio, cover_page: coverpage, privacy: track.privacy,
       tag: track.tag, title: track.title, comments: 0, likes: 0, reposts: 0
     }).key;
 
-    this.db.database.ref('/users/' + this.auth.getCurrentUser().uid + '/tracks/').child(track_id).set(track_id);
+    this.db.database.ref('/users/' + currentUserId + '/tracks/').child(track_id).set(track_id);
+
+    if (track.privacy == 'Pública') {
+      this.repostTrack(track_id);
+    }
 
   }
 

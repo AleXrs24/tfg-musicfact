@@ -15,8 +15,10 @@ import { UploadTrack } from './../pages/upload-track/upload-track';
 import { Uploading } from './../pages/uploading/uploading';
 import { Lists } from './../pages/lists/lists';
 import { TracksList } from './../pages/tracks-list/tracks-list';
+import { Trends } from './../pages/trends/trends';
 
 import { ProgressBar } from './../components/progress-bar/progress-bar';
+import { ChartsModule } from 'ng2-charts';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -58,14 +60,16 @@ export const firebaseConfig = {
     ProgressBar,
     Uploading,
     Lists,
-    TracksList
+    TracksList,
+    Trends
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    ChartsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -81,7 +85,8 @@ export const firebaseConfig = {
     UploadTrack,
     Uploading,
     Lists,
-    TracksList
+    TracksList,
+    Trends
   ],
   providers: [
     StatusBar,

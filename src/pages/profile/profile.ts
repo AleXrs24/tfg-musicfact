@@ -33,8 +33,9 @@ export class Profile {
   nfollowing: any = 0;
   isFollowed: boolean;
   following: any[];
-  currentUser: any;
   lists: any[];
+  lists_filter: any[];
+  currentUser: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private auth: AuthService,
     private modal: ModalController, private as: ActionSheetController, private ac: AlertController) {
@@ -85,9 +86,14 @@ export class Profile {
 
     //-----------------------------------------------------------------------
 
-    this.db.getLists(this.currentUser).subscribe(resp => {
+    this.db.getLists(this.user.$key).subscribe(resp => {
       this.lists = resp;
-      this.lists.reverse();
+      if (this.user.$key != this.currentUser) {
+        this.lists_filter = _.filter(this.lists, { 'privacy': 'Pública' })
+      } else {
+        this.lists_filter = this.lists;
+      }
+      this.lists_filter.reverse();
     });
 
     //----------------------------------------------------------------------
@@ -139,7 +145,7 @@ export class Profile {
                           name: 'title',
                           placeholder: 'Introduce el título de la lista',
                           type: 'text'
-                        },
+                        }
                       ],
                       buttons: [
                         {
@@ -150,10 +156,31 @@ export class Profile {
                           }
                         },
                         {
-                          text: 'Guardar',
+                          text: 'Siguiente',
                           handler: data => {
                             if (data.title != "") {
-                              this.db.newList(data.title, track, coverpage);
+                              let title = data.title;
+                              let privacy = this.ac.create();
+                              privacy.setTitle('¿Cómo será la lista?');
+                              privacy.addInput({
+                                type: 'radio',
+                                label: 'Pública',
+                                value: 'Pública',
+                                checked: true
+                              });
+                              privacy.addInput({
+                                type: 'radio',
+                                label: 'Privada',
+                                value: 'Privada'
+                              });
+                              privacy.addButton('Cancelar');
+                              privacy.addButton({
+                                text: 'Crear',
+                                handler: data => {
+                                  this.db.newList(data, track, coverpage, title);
+                                }
+                              });
+                              privacy.present();
                             } else {
                               return false;
                             }

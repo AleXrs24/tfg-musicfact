@@ -31,9 +31,11 @@
     "@ionic-native/status-bar": "3.7.0",
     "@ionic/storage": "2.0.1",
     "angularfire2": "^4.0.0-rc.0",
+    "chart.js": "^2.6.0",
     "firebase": "^3.9.0",
     "ionic-angular": "3.2.1",
     "ionicons": "3.0.0",
+    "ng2-charts": "^1.6.0",
     "rxjs": "5.1.1",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.10"
