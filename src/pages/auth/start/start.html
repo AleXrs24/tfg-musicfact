@@ -1,0 +1,12 @@
+<ion-content class="auth-home">
+
+  <div class="logo">
+    <div class="logo-icon">
+      LOGO
+    </div>
+  </div>
+
+  <button *ngIf="!isClicked" ion-button color="light" class="sign-up-btn" (click)="openSignUp()">Registrarse</button>
+  <button *ngIf="!isClicked" ion-button color="light" class="log-in-btn" (click)="openLogin()">Iniciar sesión</button>
+
+</ion-content>

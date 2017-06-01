@@ -16,6 +16,9 @@ import { Uploading } from './../pages/uploading/uploading';
 import { Lists } from './../pages/lists/lists';
 import { TracksList } from './../pages/tracks-list/tracks-list';
 import { Trends } from './../pages/trends/trends';
+import { Start } from './../pages/auth/start/start';
+import { Login } from './../pages/auth/login/login';
+import { SignUp } from './../pages/auth/sign-up/sign-up';
 
 import { ProgressBar } from './../components/progress-bar/progress-bar';
 import { ChartsModule } from 'ng2-charts';
@@ -61,7 +64,10 @@ export const firebaseConfig = {
     Uploading,
     Lists,
     TracksList,
-    Trends
+    Trends,
+    Start,
+    SignUp,
+    Login
   ],
   imports: [
     BrowserModule,
@@ -86,7 +92,10 @@ export const firebaseConfig = {
     Uploading,
     Lists,
     TracksList,
-    Trends
+    Trends,
+    Start,
+    SignUp,
+    Login
   ],
   providers: [
     StatusBar,

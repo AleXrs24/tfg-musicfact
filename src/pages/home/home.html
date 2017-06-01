@@ -1,6 +1,7 @@
 <ion-content class="card-background-page">
 
   <button ion-button outline (click)="signInWithFacebook()">Facebook</button>
+  <button ion-button outline (click)="goToStart()">Start</button>
   <button ion-button outline (click)="signOut()">Logout</button>
   <ion-card *ngFor="let track of tracks_filter; let i = index">
 
