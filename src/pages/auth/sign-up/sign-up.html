@@ -1,14 +1,5 @@
 <ion-content class="signup">
     <div class="content">
-
-        <button ion-button icon-left block color="facebook" class="social-btn" (click)="signupWithFacebook()">
-            <ion-icon name="logo-facebook"></ion-icon>
-            Registrarse con Facebook
-        </button>
-        <button ion-button icon-left block color="danger" class="social-btn" (click)="signupWithGoogle()">
-            <ion-icon name="logo-googleplus"></ion-icon>
-            Registrarse con Google+
-        </button>
         <form (ngSubmit)="signup()" #signupForm="ngForm">
             <ion-list inset>
                 <ion-item>

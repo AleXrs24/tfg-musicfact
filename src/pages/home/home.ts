@@ -235,19 +235,8 @@ export class HomePage {
     more.present();
   }
 
-  signInWithFacebook(): void {
-    this.auth.signInWithFacebook()
-      .then((res) => {
-        this.db.signInWithFacebook(res);
-      });
-  }
-
   profileView($event, user) {
     this.navCtrl.push(Profile, user);
-  }
-
-  signOut() {
-    this.auth.signOut();
   }
 
   // ionViewDidLoad() {

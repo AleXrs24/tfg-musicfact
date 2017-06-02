@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
+import { AuthService } from './../../providers/auth-service';
 import { UploadTrack } from './../upload-track/upload-track';
 import { Profile } from './../profile/profile';
 import { Trends } from './../trends/trends';
+import { Start } from './../auth/start/start';
 import * as _ from 'lodash';
 
 @Component({
@@ -16,7 +18,7 @@ export class MenuPage {
   userName: string;
   userImage: string;
 
-  constructor(public navCtrl: NavController, private db: DbApiService) {
+  constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService) {
   }
 
   ionViewDidLoad() {
@@ -42,4 +44,11 @@ export class MenuPage {
   trends() {
     this.navCtrl.push(Trends);
   }
+
+  signOut() {
+    this.auth.signOut().then(() => {
+      this.navCtrl.parent.parent.setRoot(Start)
+    })
+  }
+
 }

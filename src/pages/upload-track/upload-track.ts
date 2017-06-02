@@ -32,7 +32,7 @@ export class UploadTrack {
   constructor(public navCtrl: NavController, public navParams: NavParams, private fc: FileChooser,
     private db: DbApiService, private fp: FilePath, private ap: AndroidPermissions, private camera: Camera,
     private as: ActionSheet, private modalCtrl: ModalController, private lc: LoadingController) {
-    this.coverpage = "https://firebasestorage.googleapis.com/v0/b/soundbase-43813.appspot.com/o/img%2Fcover-pages%2Fmusic-track-default.jpg?alt=media&token=5da65d91-c46c-43a4-b924-437d619d3faf";
+    this.coverpage = "../assets/img/start.jpg";
     this.track = {
       title: '',
       tag: '',

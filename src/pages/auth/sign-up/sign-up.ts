@@ -14,7 +14,7 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class SignUp {
   form: any;
-  
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private vc: ViewController) {
     this.form = {
       email: '',
@@ -27,19 +27,15 @@ export class SignUp {
   }
 
   openForgotPassword() {
-    
+
   }
 
   signup() {
-  
-  }
-
-  signupWithFacebook() {
 
   }
 
   signupWithGoogle() {
-    
+
   }
 
   close() {

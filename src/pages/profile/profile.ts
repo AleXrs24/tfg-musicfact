@@ -4,7 +4,7 @@ import { UsersList } from './../users-list/users-list';
 import { AuthService } from './../../providers/auth-service';
 import { DbApiService } from './../../shared/db-api.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
 import { TracksList } from './../tracks-list/tracks-list';
 import * as _ from 'lodash';
 
@@ -38,7 +38,7 @@ export class Profile {
   currentUser: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private auth: AuthService,
-    private modal: ModalController, private as: ActionSheetController, private ac: AlertController) {
+    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController) {
 
     this.user = navParams.data;
   }
@@ -54,6 +54,9 @@ export class Profile {
           this.tracks_filter.push(_.find(this.tracks, (item) => {
             return track.$key == item.$key;
           }))
+        }
+        if (this.user.$key != this.currentUser) {
+          this.tracks_filter = _.filter(this.tracks_filter, { 'privacy': 'Pública' })
         }
         this.tracks_filter.reverse();
       })
@@ -178,12 +181,14 @@ export class Profile {
                                 text: 'Crear',
                                 handler: data => {
                                   if (data == 'Pública' && track.privacy == 'Privada') {
-                                    let alert = this.ac.create({
-                                      title: '¡Atención!',
-                                      subTitle: 'No se puede añadir una pista privada dentro de una lista pública',
-                                      buttons: ['Ok']
+                                    let attention = this.toast.create({
+                                      message: 'No se puede añadir una pista privada dentro de una lista pública',
+                                      duration: 3000,
+                                      position: 'bottom',
+                                      showCloseButton: true,
+                                      closeButtonText: 'Ok'
                                     });
-                                    alert.present();
+                                    attention.present();
                                   } else {
                                     this.db.newList(data, track.$key, track.cover_page, title);
                                   }
@@ -289,7 +294,7 @@ export class Profile {
   }
 
   goToTracksList(list, title) {
-    this.navCtrl.push(TracksList, { id: list, title: title });
+    this.navCtrl.push(TracksList, { id: list, title: title, user: this.user });
   }
 
 }

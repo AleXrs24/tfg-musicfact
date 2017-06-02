@@ -27,19 +27,15 @@ export class Login {
   }
 
   openForgotPassword() {
-    
+
   }
 
   login() {
-  
-  }
-
-  loginWithFacebook() {
 
   }
 
   loginWithGoogle() {
-    
+
   }
 
   close() {

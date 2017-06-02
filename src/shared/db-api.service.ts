@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from './../providers/auth-service';
+import { Platform } from 'ionic-angular';
 
 @Injectable()
 export class DbApiService {
@@ -18,7 +19,7 @@ export class DbApiService {
   comments: FirebaseListObservable<any[]>;
   tracksList: FirebaseListObservable<any[]>;
 
-  constructor(private db: AngularFireDatabase, private auth: AuthService) {
+  constructor(private db: AngularFireDatabase, private auth: AuthService, private platform: Platform) {
 
   }
 
@@ -37,8 +38,8 @@ export class DbApiService {
     return this.tracks;
   }
 
-  getTracksFromList(idlist) {
-    this.tracksList = this.db.list('/lists/' + this.getCurrentUser().uid + '/' + idlist + '/tracks');
+  getTracksFromList(idlist, iduser) {
+    this.tracksList = this.db.list('/lists/' + iduser + '/' + idlist + '/tracks');
     return this.tracksList;
   }
 
@@ -81,12 +82,20 @@ export class DbApiService {
     return this.users;
   }
 
-  signInWithFacebook(facebookData) {
-    this.db.list('/users').update(facebookData.user.uid, {
-      email: facebookData.user.email,
-      name: facebookData.user.displayName,
-      profile_image: facebookData.user.photoURL
-    });
+  signInWithFacebook(facebookData): firebase.Promise<void> {
+    if (this.platform.is('cordova')) {
+      return this.db.list('/users').update(facebookData.uid, {
+        email: facebookData.email,
+        name: facebookData.displayName,
+        profile_image: facebookData.photoURL
+      });
+    } else {
+      return this.db.list('/users').update(facebookData.user.uid, {
+        email: facebookData.user.email,
+        name: facebookData.user.displayName,
+        profile_image: facebookData.user.photoURL
+      });
+    }
   }
 
   getLikes() {

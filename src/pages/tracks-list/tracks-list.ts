@@ -1,6 +1,6 @@
 import { Lists } from './../lists/lists';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ModalController, ActionSheetController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ModalController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
 import { Comments } from './../comments/comments';
 
@@ -18,6 +18,7 @@ import * as _ from 'lodash';
   templateUrl: 'tracks-list.html',
 })
 export class TracksList {
+  user: any;
   list: any;
   title: any;
   tracks: any[];
@@ -30,9 +31,10 @@ export class TracksList {
   isRepost: any[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private lc: LoadingController,
-    private modal: ModalController, private as: ActionSheetController, private ac: AlertController) {
+    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController) {
     this.list = this.navParams.get("id");
     this.title = this.navParams.get("title");
+    this.user = this.navParams.get("user");
   }
 
   ionViewDidLoad() {
@@ -44,7 +46,7 @@ export class TracksList {
       this.db.getTracks().subscribe(resp => {
         this.tracks = resp;
 
-        this.db.getTracksFromList(this.list).subscribe(resp => {
+        this.db.getTracksFromList(this.list, this.user.$key).subscribe(resp => {
           this.tracks_list = resp;
           this.tracks_list_sort = _.chain(this.tracks_list).sortBy('time').value();
           this.tracks_filter = [];
@@ -146,7 +148,18 @@ export class TracksList {
                               privacy.addButton({
                                 text: 'Crear',
                                 handler: data => {
-                                  this.db.newList(data, track.$key, track.cover_page, title);
+                                  if (data == 'Pública' && track.privacy == 'Privada') {
+                                    let attention = this.toast.create({
+                                      message: 'No se puede añadir una pista privada dentro de una lista pública',
+                                      duration: 3000,
+                                      position: 'bottom',
+                                      showCloseButton: true,
+                                      closeButtonText: 'Ok'
+                                    });
+                                    attention.present();
+                                  } else {
+                                    this.db.newList(data, track.$key, track.cover_page, title);
+                                  }
                                 }
                               });
                               privacy.present();

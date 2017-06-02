@@ -37,13 +37,12 @@ export class AuthService {
       });
     }
     else {
-      return this.afAuth.auth
-        .signInWithPopup(new firebase.auth.FacebookAuthProvider());
+      return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
     }
   }
 
-  signOut() {
-    this.afAuth.auth.signOut();
+  signOut(): firebase.Promise<any> {
+    return this.afAuth.auth.signOut();
   }
 
 }

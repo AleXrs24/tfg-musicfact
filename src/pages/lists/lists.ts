@@ -18,29 +18,32 @@ export class Lists {
   tracksList: any;
   track: any;
   lists: any;
+  currentUser: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private vc: ViewController, private db: DbApiService,
     private toast: ToastController, private ac: AlertController) {
-
-    this.track = this.navParams.get("track");
+      this.track = this.navParams.get("track");
+      this.currentUser = this.db.getCurrentUser();
   }
 
   ionViewDidLoad() {
-    let currentUser = this.db.getCurrentUser();
-    this.db.getLists(currentUser.uid).subscribe(resp => {
+    this.db.getLists(this.currentUser.uid).subscribe(resp => {
       this.lists = resp;
     });
   }
 
   addTrackToList(list) {
     if (list.privacy == "Pública" && this.track.privacy == "Privada") {
-      let alert = this.ac.create({
-        title: '¡Atención!',
-        subTitle: 'No se puede añadir una pista privada dentro de una lista pública',
-        buttons: ['Ok']
+      let attention = this.toast.create({
+        message: 'No se puede añadir una pista privada dentro de una lista pública',
+        duration: 3000,
+        position: 'bottom',
+        showCloseButton: true,
+        closeButtonText: 'Ok'
       });
-      alert.present();
+      attention.present();
     } else {
-      this.db.getTracksFromList(list.$key).subscribe(resp => {
+      this.db.getTracksFromList(list.$key, this.currentUser.uid).subscribe(resp => {
         this.tracksList = resp;
       });
 

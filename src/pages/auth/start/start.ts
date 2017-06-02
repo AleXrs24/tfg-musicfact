@@ -1,7 +1,10 @@
+import { TabsPage } from './../../tabs/tabs';
 import { Login } from './../login/login';
 import { SignUp } from './../sign-up/sign-up';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { DbApiService } from './../../../shared/db-api.service';
+import { AuthService } from './../../../providers/auth-service';
 
 /**
  * Generated class for the Start page.
@@ -17,12 +20,13 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 export class Start {
   isClicked: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController) {
-    this.isClicked = false;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private modal: ModalController,
+    private auth: AuthService, private ac: AlertController, private db: DbApiService) {
+      this.isClicked = false;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad Start');
+    console.log("Current User is: ", this.auth.authenticated);
   }
 
   openSignUp() {
@@ -41,6 +45,25 @@ export class Start {
     login.onDidDismiss(() => {
       this.isClicked = false;
     });
+  }
+
+  signInWithFacebook() {
+    this.auth.signInWithFacebook().then((res) => {
+      this.db.signInWithFacebook(res).then(() => {
+        this.navCtrl.setRoot(TabsPage);
+      }).catch(err => {
+        this.showError(err);
+      })
+    });
+  }
+
+  showError(text) {
+    let error = this.ac.create({
+      title: 'Error',
+      subTitle: text,
+      buttons: ['Ok']
+    });
+    error.present();
   }
 
 }
