@@ -1,6 +1,6 @@
 <ion-content class="card-background-page">
 
-  <ion-card class="card-width" no-padding no-margin margin-bottom *ngFor="let track of tracks_filter; let i = index">
+  <ion-card class="card-width" no-margin margin-bottom *ngFor="let track of tracks_filter; let i = index">
 
     <ion-item (click)="profileView($event, userData[i])">
       <ion-avatar item-left>

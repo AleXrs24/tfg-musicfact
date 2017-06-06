@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from './../providers/auth-service';
 import { Platform } from 'ionic-angular';
+import firebase from 'firebase';
 
 @Injectable()
 export class DbApiService {
@@ -96,6 +97,15 @@ export class DbApiService {
         profile_image: facebookData.user.photoURL
       });
     }
+  }
+
+  signInWithCredentials(data, form): firebase.Promise<any> {
+    return this.db.list('/users').update(data.uid, {
+      email: data.email,
+      name: form.name,
+      country: form.country,
+      profile_image: form.image
+    });
   }
 
   getLikes() {

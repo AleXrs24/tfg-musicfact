@@ -30,8 +30,8 @@ export class Start {
   }
 
   openSignUp() {
-    let signup = this.modal.create(SignUp);
     this.isClicked = true;
+    let signup = this.modal.create(SignUp);
     signup.present();
     signup.onDidDismiss(() => {
       this.isClicked = false;
@@ -39,8 +39,8 @@ export class Start {
   }
 
   openLogin() {
-    let login = this.modal.create(Login);
     this.isClicked = true;
+    let login = this.modal.create(Login);  
     login.present();
     login.onDidDismiss(() => {
       this.isClicked = false;

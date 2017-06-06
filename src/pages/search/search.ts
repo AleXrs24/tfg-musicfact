@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
-import { AuthService } from './../../providers/auth-service';
 import { Profile } from './../profile/profile';
 import * as _ from 'lodash';
 
@@ -17,8 +16,7 @@ export class SearchPage {
   following: any[];
   isFollowed: boolean[] = [];
 
-  constructor(public navCtrl: NavController, private db: DbApiService,
-  private auth: AuthService) {
+  constructor(public navCtrl: NavController, private db: DbApiService) {
 
   }
 
@@ -37,7 +35,7 @@ export class SearchPage {
     this.db.getUsers().subscribe(resp => {
       this.users = resp;
       this.users = this.users.filter((item) => {
-        return (item.$key != this.auth.getCurrentUser().uid);
+        return (item.$key != this.db.getCurrentUser().uid);
       })
       this.updateUsersList();
     })

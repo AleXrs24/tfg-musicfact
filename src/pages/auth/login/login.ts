@@ -1,5 +1,7 @@
+import { TabsPage } from './../../tabs/tabs';
+import { AuthService } from './../../../providers/auth-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 
 /**
  * Generated class for the Login page.
@@ -15,7 +17,7 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 export class Login {
   form: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private vc: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private vc: ViewController, private auth: AuthService, private ac: AlertController) {
     this.form = {
       email: '',
       password: ''
@@ -31,11 +33,20 @@ export class Login {
   }
 
   login() {
-
+    this.auth.loginWithCredentials(this.form).then(() => {
+      this.navCtrl.setRoot(TabsPage);
+    }).catch(err => {
+      this.showError(err);
+    })
   }
 
-  loginWithGoogle() {
-
+  showError(text) {
+    let error = this.ac.create({
+      title: 'Error',
+      subTitle: text,
+      buttons: ['Ok']
+    });
+    error.present();
   }
 
   close() {

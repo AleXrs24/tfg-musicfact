@@ -48,12 +48,12 @@ export class HomePage {
           this.tracks_filter = [];
           this.userData = [];
           for (let user of this.usersFollowing) {
-            this.userData.push(_.find(this.users, (item) => {
-              return item.$key == user.$key;
-            }))
             this.db.getTracksReposts(user.$key).subscribe(resp => {
               this.tracks_reposts = resp;
               for (let track of this.tracks_reposts) {
+                this.userData.push(_.find(this.users, (item) => {
+                  return item.$key == user.$key;
+                }))
                 let value = _.find(this.tracks, (item) => {
                   return item.$key == track.$key;
                 })

@@ -9,7 +9,7 @@ import { Facebook } from '@ionic-native/facebook';
 @Injectable()
 export class AuthService {
   private currentUser: firebase.User;
-  
+
   constructor(private afAuth: AngularFireAuth, private pf: Platform, private fb: Facebook) {
     afAuth.authState.subscribe((user: firebase.User) => {
       if (!user) {
@@ -17,7 +17,7 @@ export class AuthService {
         return;
       }
       this.currentUser = user;
-      console.log("Current User is: ", this.currentUser.email);     
+      console.log("Current User is: ", this.currentUser.email);
     });
   }
 
@@ -39,6 +39,14 @@ export class AuthService {
     else {
       return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
     }
+  }
+
+  signInWithCredentials(form): firebase.Promise<any> {
+    return this.afAuth.auth.createUserWithEmailAndPassword(form.email, form.password);
+  }
+
+  loginWithCredentials(form): firebase.Promise<any> {
+    return this.afAuth.auth.signInWithEmailAndPassword(form.email, form.password)
   }
 
   signOut(): firebase.Promise<any> {

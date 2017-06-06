@@ -5,28 +5,23 @@ page-login {
         .content {
             margin-top: 20%;
         }
+
+        .log-in-btn {
+            margin-top: 5%;
+            margin-left: 10%;
+            width: 40%;
+        }
+
+        .cancel-btn {
+            margin-top: 5%;
+            margin-left: 10%;
+            width: 30%;
+        }
         
         .forgot-password {
             text-align: center;
             color: white;
             margin-bottom: 2%;
-        }
-
-        form {
-            width: 95%;
-            margin: auto;
-
-            .log-in-btn {
-                margin-top: 5%;
-                margin-left: 10%;
-                width: 40%;
-            }
-
-            .cancel-btn {
-                margin-top: 5%;
-                margin-left: 10%;
-                width: 30%;
-            }
         }
     }
 }
