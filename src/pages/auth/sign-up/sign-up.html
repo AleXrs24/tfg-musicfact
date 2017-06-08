@@ -1,22 +1,6 @@
 <ion-content class="signup">
     <div class="content">
         <ion-list inset>
-            <ion-item>
-                <ion-input type="email" placeholder="Email" [(ngModel)]="form.email" name="email"></ion-input>
-            </ion-item>
-
-            <ion-item>
-                <ion-input type="password" placeholder="Contraseña" [(ngModel)]="form.password" name="password"></ion-input>
-            </ion-item>
-
-            <ion-item>
-                <ion-input type="text" placeholder="Nombre" [(ngModel)]="form.name" name="name"></ion-input>
-            </ion-item>
-
-            <ion-item>
-                <ion-input type="text" placeholder="País" [(ngModel)]="form.country" name="country"></ion-input>
-            </ion-item>
-
             <ion-item no-lines>
                 <ion-thumbnail item-left>
                     <img src="{{image_path}}">
@@ -29,8 +13,53 @@
                 </ion-fab>
             </ion-item>
         </ion-list>
-        <button ion-button color="primary" class="cancel-btn" (click)="close()">Cancelar</button>
-        <button ion-button color="app2" class="signup-btn" (click)="signup()">Registrarse</button>
+        <form [formGroup]="myForm" (ngSubmit)="signup()" novalidate>
+            <ion-list inset>
+                <ion-item>
+                    <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="myForm.get('email').errors && myForm.get('email').dirty">
+                    <p color="danger" ion-text *ngIf="myForm.get('email').hasError('required')">Campo requerido</p>
+                    <p color="danger" ion-text *ngIf="myForm.get('email').hasError('email')">Formato email no válido</p>
+                </ion-item>
+
+                <ion-item>
+                    <ion-input formControlName="password" type="password" placeholder="Contraseña"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="myForm.get('password').errors && myForm.get('password').dirty">
+                    <p color="danger" ion-text *ngIf="myForm.get('password').hasError('required')">Campo requerido</p>
+                    <p color="danger" ion-text *ngIf="myForm.get('password').hasError('pattern')">Contraseña débil</p>
+                </ion-item>
+
+                <ion-item>
+                    <ion-input formControlName="confirmPassword" type="password" placeholder="Confirmar contraseña"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="myForm.get('confirmPassword').errors && myForm.get('confirmPassword').dirty">
+                    <p color="danger" ion-text>Contraseñas no coinciden</p>
+                </ion-item>
+
+
+                <ion-item>
+                    <ion-input formControlName="name" type="text" placeholder="Nombre"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="myForm.get('name').errors && myForm.get('name').dirty">
+                    <p color="danger" ion-text *ngIf="myForm.get('name').hasError('required')">Campo requerido</p>
+                </ion-item>
+
+                <ion-item>
+                    <ion-input formControlName="country" type="text" placeholder="País"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="myForm.get('country').errors && myForm.get('country').dirty">
+                    <p color="danger" ion-text *ngIf="myForm.get('country').hasError('required')">Campo requerido</p>
+                    <p color="danger" ion-text *ngIf="myForm.get('country').hasError('minlength')">Mínimo 3 caracteres</p>
+                    <p color="danger" ion-text *ngIf="myForm.get('country').hasError('maxlength')">Máximo 10 caracteres</p>
+                </ion-item>
+            </ion-list>
+            <button ion-button class="cancel-btn" type="reset" color="primary" (click)="close()">Cancelar</button>
+            <button ion-button class="signup-btn" type="submit" [disabled]="myForm.invalid" color="app2">Registrarse</button>
+        </form>
+
+
 
     </div>
 </ion-content>

@@ -14,7 +14,7 @@
 
   <ion-list>
 
-    <ion-card *ngFor="let track of tracks_filter; let i = index">
+    <ion-card class="card-width" no-margin margin-bottom *ngFor="let track of tracks_filter; let i = index">
 
       <img class="image" src="{{track.cover_page}}">
       <div class="card-title">{{track.title}}</div>
@@ -52,7 +52,7 @@
           <ion-icon color="app" name="repeat"></ion-icon>
           <div>{{track.reposts}}</div>
         </button>
-          <button *ngIf="!isRepost[i]" color="grey2" ion-button icon-left clear (click)="repostTrack(track.$key)">
+          <button *ngIf="!isRepost[i]" color="grey2" ion-button icon-left clear (click)="repostTrack(track)">
           <ion-icon name="repeat"></ion-icon>
           <div>{{track.reposts}}</div>
         </button>

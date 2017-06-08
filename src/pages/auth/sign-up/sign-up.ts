@@ -1,4 +1,3 @@
-import { TabsPage } from './../../tabs/tabs';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { DbApiService } from './../../../shared/db-api.service';
@@ -6,6 +5,9 @@ import { AuthService } from './../../../providers/auth-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
 import firebase from 'firebase';
+
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+
 
 /**
  * Generated class for the SignUp page.
@@ -19,25 +21,36 @@ import firebase from 'firebase';
   templateUrl: 'sign-up.html',
 })
 export class SignUp {
-  form: any;
+  myForm: FormGroup;
   image_path: string;
   new_image: boolean;
+  image: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private vc: ViewController, private auth: AuthService,
-    private db: DbApiService, private ac: AlertController, private as: ActionSheet, private camera: Camera, private lc: LoadingController) {
+    private db: DbApiService, private ac: AlertController, private as: ActionSheet, private camera: Camera, private lc: LoadingController,
+    private fb: FormBuilder) {
     this.image_path = 'assets/img/profile_image.png';
+    this.image = 'assets/img/profile_image.png';
     this.new_image = false;
-    this.form = {
-      email: '',
-      password: '',
-      name: '',
-      country: '',
-      image: 'assets/img/profile_image.png'
-    }
+    this.myForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]{6,18}$/)]],
+      confirmPassword: [''],
+      name: ['', [Validators.required]],
+      country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]]
+    }, {
+        validator: this.MatchPassword
+      });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SignUp');
+  MatchPassword(AC: AbstractControl) {
+    let password = AC.get('password').value;
+    let confirmPassword = AC.get('confirmPassword').value;
+    if (password != confirmPassword) {
+      AC.get('confirmPassword').setErrors({ MatchPassword: true })
+    } else {
+      return null
+    }
   }
 
   selectOption() {
@@ -81,15 +94,11 @@ export class SignUp {
   updateProfileImage(options) {
     this.camera.getPicture(options).then((data) => {
       this.image_path = "data:image/jpeg;base64," + data;
-      this.form.image = data;
+      this.image = data;
       this.new_image = true;
     }, (err) => {
-      this.showError(err);
+      console.log(err);
     });
-  }
-
-  openForgotPassword() {
-
   }
 
   signup() {
@@ -97,9 +106,9 @@ export class SignUp {
       content: 'Por favor, espera...'
     });
     loader.present().then(() => {
-      this.auth.signInWithCredentials(this.form).then(res => {
+      this.auth.signInWithCredentials(this.myForm.value).then(res => {
         if (this.new_image) {
-          let byteCharacters = atob(this.form.image);
+          let byteCharacters = atob(this.image);
           let byteNumbers = new Array(byteCharacters.length);
           for (let i = 0; i < byteCharacters.length; i++) {
             byteNumbers[i] = byteCharacters.charCodeAt(i);
@@ -146,21 +155,23 @@ export class SignUp {
               }
             }, () => {
               // Upload completed successfully, now we can get the download URL
-              this.form.image = uploadTask.snapshot.downloadURL;
+              this.image = uploadTask.snapshot.downloadURL;
 
-              this.db.signInWithCredentials(res, this.form).then(() => {
+              this.db.signInWithCredentials(res, this.myForm.value, this.image).then(() => {
                 loader.dismiss();
-                this.navCtrl.setRoot(TabsPage);
+                this.vc.dismiss();
               }).catch(err => {
                 this.showError(err);
+                loader.dismiss();
               })
             });
         } else {
-          this.db.signInWithCredentials(res, this.form).then(() => {
+          this.db.signInWithCredentials(res, this.myForm.value, this.image).then(() => {
             loader.dismiss();
-            this.navCtrl.setRoot(TabsPage);
+            this.vc.dismiss();
           }).catch(err => {
             this.showError(err);
+            loader.dismiss();
           })
         }
       }).catch(err => {

@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { Injectable } from "@angular/core";
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from './../providers/auth-service';
@@ -20,7 +21,7 @@ export class DbApiService {
   comments: FirebaseListObservable<any[]>;
   tracksList: FirebaseListObservable<any[]>;
 
-  constructor(private db: AngularFireDatabase, private auth: AuthService, private platform: Platform) {
+  constructor(private db: AngularFireDatabase, private auth: AuthService, private platform: Platform, private storage: Storage) {
 
   }
 
@@ -85,12 +86,16 @@ export class DbApiService {
 
   signInWithFacebook(facebookData): firebase.Promise<void> {
     if (this.platform.is('cordova')) {
+      this.storage.set('name', facebookData.displayName);
+      this.storage.set('image', facebookData.photoURL);
       return this.db.list('/users').update(facebookData.uid, {
         email: facebookData.email,
         name: facebookData.displayName,
         profile_image: facebookData.photoURL
       });
     } else {
+      this.storage.set('name', facebookData.user.displayName);
+      this.storage.set('image', facebookData.user.photoURL);
       return this.db.list('/users').update(facebookData.user.uid, {
         email: facebookData.user.email,
         name: facebookData.user.displayName,
@@ -99,12 +104,12 @@ export class DbApiService {
     }
   }
 
-  signInWithCredentials(data, form): firebase.Promise<any> {
+  signInWithCredentials(data, form, image): firebase.Promise<any> {
     return this.db.list('/users').update(data.uid, {
       email: data.email,
       name: form.name,
       country: form.country,
-      profile_image: form.image
+      profile_image: image
     });
   }
 
@@ -166,16 +171,26 @@ export class DbApiService {
     return this.comments;
   }
 
-  addComment(track_id, comment) {
+  addComment(track_id, comment, image, name) {
     this.comments.push({
-      user_img: this.auth.getCurrentUser().photoURL,
-      user_name: this.auth.getCurrentUser().displayName,
+      user_img: image,
+      user_name: name,
       body: comment,
-      time: new Date().getTime()
+      time: new Date().getTime(),
+      user_id: this.getCurrentUser().uid
     });
     this.db.database.ref('/tracks/' + track_id).once('value').then((snapshot) => {
       this.db.list('/tracks').update(track_id, {
         comments: snapshot.val().comments + 1
+      })
+    })
+  }
+
+  removeComment(track_id, comment_id) {
+    this.db.database.ref('/comments/' + track_id + '/' + comment_id).remove();
+    this.db.database.ref('/tracks/' + track_id).once('value').then((snapshot) => {
+      this.db.list('/tracks').update(track_id, {
+        comments: snapshot.val().comments - 1
       })
     })
   }
@@ -197,12 +212,12 @@ export class DbApiService {
     this.db.database.ref('/users/' + user_id + '/followers/' + currentUserId).remove();
   }
 
-  newList(privacy, trackid, coverpage, title) {
+  newList(privacy, trackid, coverpage, title, creator) {
     let currentUser = this.getCurrentUser();
     this.getLists(currentUser.uid);
     let list_id;
     list_id = this.lists.push({
-      coverpage: coverpage, creator: currentUser.displayName, ntracks: 1, title: title, privacy: privacy
+      coverpage: coverpage, creator: creator, ntracks: 1, title: title, privacy: privacy
     }).key;
 
     this.db.database.ref('/lists/' + currentUser.uid + '/' + list_id + '/tracks/').child(trackid).child('time').set(new Date().getTime());

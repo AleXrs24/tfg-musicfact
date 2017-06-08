@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { Lists } from './../lists/lists';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ModalController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
@@ -29,9 +30,10 @@ export class TracksList {
   isLike: any[] = [];
   reposts: any[];
   isRepost: any[] = [];
+  userName: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private lc: LoadingController,
-    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController) {
+    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController, private storage: Storage) {
     this.list = this.navParams.get("id");
     this.title = this.navParams.get("title");
     this.user = this.navParams.get("user");
@@ -42,6 +44,9 @@ export class TracksList {
       content: 'Cargando...'
     });
     loader.present().then(() => {
+      this.storage.get('name').then((val) => {
+        this.userName = val;
+      });
 
       this.db.getTracks().subscribe(resp => {
         this.tracks = resp;
@@ -158,7 +163,7 @@ export class TracksList {
                                     });
                                     attention.present();
                                   } else {
-                                    this.db.newList(data, track.$key, track.cover_page, title);
+                                    this.db.newList(data, track.$key, track.cover_page, title, this.userName);
                                   }
                                 }
                               });
@@ -215,7 +220,29 @@ export class TracksList {
   }
 
   repostTrack(track) {
-    this.db.repostTrack(track);
+    if (track.privacy == 'Privada') {
+      let confirm = this.ac.create({
+        title: 'Esta pista ha sido creada como privada',
+        message: '¿Desea repostearla a sus seguidores y convertirla en pública?',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+              console.log('No clicked');
+            }
+          },
+          {
+            text: 'Sí',
+            handler: () => {
+              this.db.repostPrivateTrack(track.$key);
+            }
+          }
+        ]
+      });
+      confirm.present();
+    } else {
+      this.db.repostTrack(track.$key);
+    }
   }
 
   unRepostTrack(track) {

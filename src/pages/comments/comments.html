@@ -20,25 +20,30 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let comment of comments" text-wrap>
-      <ion-row>
-        <ion-col col-2>
-          <ion-avatar>
-            <img src="{{comment.user_img}}">
-          </ion-avatar>
-        </ion-col>
-        <ion-col>
-          <h2>{{comment.user_name}}</h2>
-          <p>{{comment.body}}</p>
-        </ion-col>
-      </ion-row>
-      <ion-row justify-content-end>
-        <ion-col col-auto>
-          <ion-note class="time">
-            {{ comment.time | date:'dd/MM/yy' }} - {{ comment.time | date:'HH:mm' }}
-          </ion-note>
-        </ion-col>
-      </ion-row>
-    </ion-item>
+    <ion-item-sliding *ngFor="let comment of comments" text-wrap>
+      <ion-item>
+        <ion-row>
+          <ion-col col-2>
+            <ion-avatar>
+              <img src="{{comment.user_img}}">
+            </ion-avatar>
+          </ion-col>
+          <ion-col>
+            <h2>{{comment.user_name}}</h2>
+            <p>{{comment.body}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row justify-content-end>
+          <ion-col col-auto>
+            <ion-note class="time">
+              {{ comment.time | date:'dd/MM/yy' }} - {{ comment.time | date:'HH:mm' }}
+            </ion-note>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item-options *ngIf="comment.user_id == currentUserId">
+        <button ion-button icon-only color="danger" (click)="removeComment(comment.$key)"><ion-icon name="trash"></ion-icon></button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

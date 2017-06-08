@@ -15,6 +15,7 @@ export class SearchPage {
   //allTags: any[];
   following: any[];
   isFollowed: boolean[] = [];
+  search: string = "tracks";
 
   constructor(public navCtrl: NavController, private db: DbApiService) {
 

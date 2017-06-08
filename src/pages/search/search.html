@@ -12,13 +12,25 @@
 
     </ion-list>-->
 
-    <ion-toolbar>
+    <ion-toolbar color="light">
         <ion-searchbar (ionInput)="getItems($event)" placeholder="Buscar"></ion-searchbar>
     </ion-toolbar>
 
-    <ion-list>
-        <ion-item-group>
-            <ion-item-divider color="light">Pistas</ion-item-divider>
+    <ion-toolbar color="light">
+        <ion-segment [(ngModel)]="search" color="app">
+            <ion-segment-button value="tracks">
+                <ion-icon name="musical-notes"></ion-icon>
+            </ion-segment-button>
+
+            <ion-segment-button value="people">
+                <ion-icon name="people"></ion-icon>
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+
+    <div [ngSwitch]="search">
+        <ion-list *ngSwitchCase="'tracks'">
+
             <ion-item *ngFor="let track of tracks" text-wrap>
                 <ion-avatar item-left>
                     <img src="{{track.cover_page}}">
@@ -27,9 +39,8 @@
                 <p>{{track.artist}}</p>
                 <ion-icon item-right name="pulse" color="app"></ion-icon>
             </ion-item>
-        </ion-item-group>
-        <ion-item-group>
-            <ion-item-divider color="light">Gente</ion-item-divider>
+        </ion-list>
+        <ion-list *ngSwitchCase="'people'">
             <ion-item *ngFor="let user of users; let i = index" (click)="profileView($event, user)">
                 <ion-avatar item-left>
                     <img src="{{user.profile_image}}">
@@ -43,6 +54,6 @@
                     <ion-icon name="done-all" ></ion-icon>
                 </button>
             </ion-item>
-        </ion-item-group>
-    </ion-list>
+        </ion-list>
+    </div>
 </ion-content>

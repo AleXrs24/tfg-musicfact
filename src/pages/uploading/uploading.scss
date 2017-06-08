@@ -1,3 +1,21 @@
 page-uploading {
-    
+    .uploading {
+        background-color: rgba(0, 0, 0, 0.7);
+
+        .progress {
+            position: absolute;
+            border-radius: 5px;
+            width: 70%;
+            height: 200px;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            box-shadow: 0 16px 20px rgba(0,0,0,.4);
+            background-color: #fafafa;
+            text-align: center;
+        }
+        
+    }
 }

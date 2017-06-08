@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { Start } from './../auth/start/start';
 import { Component } from '@angular/core';
 import { NavController, LoadingController, ModalController, ActionSheetController, AlertController } from 'ionic-angular';
@@ -26,9 +27,10 @@ export class HomePage {
   tracks_filter: any[] = [];
   tracks_reposts: any[];
   userData: any[] = [];
-
+  userName: string;
+  
   constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService,
-    private lc: LoadingController, private modal: ModalController, private as: ActionSheetController, private ac: AlertController) {
+    private lc: LoadingController, private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private storage: Storage) {
   }
 
   ionViewDidLoad() {
@@ -36,6 +38,10 @@ export class HomePage {
       content: 'Cargando...'
     });
     loader.present().then(() => {
+      this.storage.get('name').then((val) => {
+        this.userName = val;
+      });
+
       this.db.getUsers().subscribe(resp => {
         this.users = resp;
       })
@@ -188,7 +194,7 @@ export class HomePage {
                               privacy.addButton({
                                 text: 'Crear',
                                 handler: data => {
-                                  this.db.newList(data, track.$key, track.cover_page, title);
+                                  this.db.newList(data, track.$key, track.cover_page, title, this.userName);
                                 }
                               });
                               privacy.present();

@@ -55,7 +55,7 @@
         <h2>Pistas</h2>
       </ion-list-header>
 
-      <ion-card *ngFor="let track of tracks_filter; let i = index">
+      <ion-card class="card-width" no-margin margin-bottom *ngFor="let track of tracks_filter; let i = index">
 
         <img class="image" src="{{track.cover_page}}">
         <div class="card-title">{{track.title}}</div>
@@ -117,7 +117,7 @@
         <h2>Listas</h2>
       </ion-list-header>
 
-      <ion-card *ngFor="let list of lists_filter" (click)="goToTracksList(list.$key, list.title)">
+      <ion-card class="card-width" no-margin margin-bottom *ngFor="let list of lists_filter" (click)="goToTracksList(list.$key, list.title)">
 
         <img class="image" src="{{list.coverpage}}">
         <div class="card-title-list">{{list.title}}</div>

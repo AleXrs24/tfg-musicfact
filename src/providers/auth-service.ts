@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { Observable } from 'rxjs/Observable';
 
 import { Platform } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
@@ -21,8 +22,16 @@ export class AuthService {
     });
   }
 
-  get authenticated(): boolean {
-    return this.currentUser !== null;
+  isAuthenticated() {
+    return Observable.create(observer => {
+      this.afAuth.authState.subscribe(authData => {
+        if (authData) {
+          observer.next();
+        } else {
+          observer.error();
+        }
+      });
+    });
   }
 
   getCurrentUser() {
@@ -46,7 +55,11 @@ export class AuthService {
   }
 
   loginWithCredentials(form): firebase.Promise<any> {
-    return this.afAuth.auth.signInWithEmailAndPassword(form.email, form.password)
+    return this.afAuth.auth.signInWithEmailAndPassword(form.email, form.password);
+  }
+
+  sendPasswordResetEmail(form): firebase.Promise<any>{
+    return this.afAuth.auth.sendPasswordResetEmail(form.email);
   }
 
   signOut(): firebase.Promise<any> {

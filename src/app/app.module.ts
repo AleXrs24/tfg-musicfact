@@ -19,6 +19,8 @@ import { Trends } from './../pages/trends/trends';
 import { Start } from './../pages/auth/start/start';
 import { Login } from './../pages/auth/login/login';
 import { SignUp } from './../pages/auth/sign-up/sign-up';
+import { ForgotPassword } from './../pages/auth/forgot-password/forgot-password';
+import { ViewTrack } from './../pages/view-track/view-track';
 
 import { ProgressBar } from './../components/progress-bar/progress-bar';
 import { ChartsModule } from 'ng2-charts';
@@ -35,6 +37,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Camera } from '@ionic-native/camera';
 import { ActionSheet } from '@ionic-native/action-sheet';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { DbApiService } from './../shared/db-api.service';
 import { AuthService } from '../providers/auth-service';
@@ -67,11 +70,14 @@ export const firebaseConfig = {
     Trends,
     Start,
     SignUp,
-    Login
+    Login,
+    ForgotPassword,
+    ViewTrack
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
@@ -95,7 +101,9 @@ export const firebaseConfig = {
     Trends,
     Start,
     SignUp,
-    Login
+    Login,
+    ForgotPassword,
+    ViewTrack
   ],
   providers: [
     StatusBar,

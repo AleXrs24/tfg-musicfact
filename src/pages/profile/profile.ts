@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { Lists } from './../lists/lists';
 import { Comments } from './../comments/comments';
 import { UsersList } from './../users-list/users-list';
@@ -36,14 +37,19 @@ export class Profile {
   lists: any[];
   lists_filter: any[];
   currentUser: any;
-
+  userName: string;
+  
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private auth: AuthService,
-    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController) {
+    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController, private storage: Storage) {
 
     this.user = navParams.data;
   }
 
   ionViewDidLoad() {
+    this.storage.get('name').then((val) => {
+      this.userName = val;
+    });
+
     this.currentUser = this.db.getCurrentUser().uid;
     this.db.getTracks().subscribe(resp => {
       this.tracks = resp;
@@ -190,7 +196,7 @@ export class Profile {
                                     });
                                     attention.present();
                                   } else {
-                                    this.db.newList(data, track.$key, track.cover_page, title);
+                                    this.db.newList(data, track.$key, track.cover_page, title, this.userName);
                                   }
                                 }
                               });

@@ -1,3 +1,4 @@
+import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
@@ -24,9 +25,10 @@ export class Uploading {
   coverpage_url: any;
   audio_url: any;
   newCoverPage: boolean;
+  userName: string;
+  userImage: string;
 
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private viewCtrl: ViewController, private storage: Storage) {
     this.audio_blob = this.navParams.get('audio_blob');
     this.coverpageB64 = this.navParams.get('coverpageB64');
     this.newCoverPage = this.navParams.get('newCoverPage');
@@ -35,6 +37,14 @@ export class Uploading {
   }
 
   ionViewDidLoad() {
+    this.storage.get('name').then(data => {
+      this.userName = data;
+    });
+
+    this.storage.get('image').then(data => {
+      this.userImage = data;
+    });
+
     //AUDIO TRACK
     let storageRef: any,
       currentUser: any,
@@ -87,7 +97,7 @@ export class Uploading {
 
         //Upload to Database
         if (this.newCoverPage == false || this.progress_image == 100) {
-          this.db.uploadToDatabase(this.db.getCurrentUser().displayName, this.db.getCurrentUser().photoURL,
+          this.db.uploadToDatabase(this.userName, this.userImage,
             this.audio_url, this.coverpage_url, this.track);
 
           this.dismiss();
@@ -151,10 +161,10 @@ export class Uploading {
 
           //Upload to Database
           if (this.progress_audio == 100) {
-            this.db.uploadToDatabase(this.db.getCurrentUser().displayName, this.db.getCurrentUser().photoURL,
+            this.db.uploadToDatabase(this.userName, this.userImage,
               this.audio_url, this.coverpage_url, this.track);
-            
-            this.dismiss(); 
+
+            this.dismiss();
           }
         });
 

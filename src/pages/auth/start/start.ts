@@ -25,10 +25,6 @@ export class Start {
       this.isClicked = false;
   }
 
-  ionViewDidLoad() {
-    console.log("Current User is: ", this.auth.authenticated);
-  }
-
   openSignUp() {
     this.isClicked = true;
     let signup = this.modal.create(SignUp);

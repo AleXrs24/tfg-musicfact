@@ -1,16 +1,25 @@
 <ion-content class="login">
   <div class="content">
-    <ion-list inset>
-      <ion-item>
-        <ion-input type="text" placeholder="Email" [(ngModel)]="form.email" name="email"></ion-input>
-      </ion-item>
+    <form [formGroup]="myForm" (ngSubmit)="login()" novalidate>
+      <ion-list inset>
+        <ion-item>
+          <ion-input formControlName="email" type="text" placeholder="Email"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="myForm.get('email').errors && myForm.get('email').dirty">
+          <p color="danger" ion-text *ngIf="myForm.get('email').hasError('required')">Campo requerido</p>
+        </ion-item>
 
-      <ion-item>
-        <ion-input type="password" placeholder="Contraseña" [(ngModel)]="form.password" name="password"></ion-input>
-      </ion-item>
-    </ion-list>
-    <button ion-button color="primary" class="cancel-btn" (click)="close()">Cancelar</button>
-    <button ion-button color="app2" class="log-in-btn" (click)="login()">Iniciar sesión</button>
+        <ion-item>
+          <ion-input formControlName="password" type="password" placeholder="Contraseña"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="myForm.get('password').errors && myForm.get('password').dirty">
+          <p color="danger" ion-text *ngIf="myForm.get('password').hasError('required')">Campo requerido</p>
+        </ion-item>
+      </ion-list>
+
+      <button ion-button class="cancel-btn" color="primary" type="reset" (click)="close()">Cancelar</button>
+      <button ion-button class="log-in-btn" color="app2" type="submit" [disabled]="myForm.invalid">Iniciar sesión</button>
+    </form>
 
     <div padding class="forgot-password" (click)="openForgotPassword()">
       ¿Has olvidado tu contraseña?
