@@ -38,9 +38,11 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Camera } from '@ionic-native/camera';
 import { ActionSheet } from '@ionic-native/action-sheet';
 import { IonicStorageModule } from '@ionic/storage';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 import { DbApiService } from './../shared/db-api.service';
 import { AuthService } from '../providers/auth-service';
+import { SmartAudio } from './../providers/smart-audio';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDs61mnlefZKQSmb1viYKdxXZcRAlyGxlI",
@@ -111,12 +113,14 @@ export const firebaseConfig = {
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     DbApiService,
     AuthService,
+    SmartAudio,
     Facebook,
     FileChooser,
     FilePath,
     AndroidPermissions,
     Camera,
-    ActionSheet
+    ActionSheet,
+    NativeAudio
   ]
 })
 export class AppModule { }

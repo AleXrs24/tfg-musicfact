@@ -32,7 +32,7 @@ export class Login {
   }
 
   openForgotPassword() {
-    let forgotPassword = this.modal.create(ForgotPassword);  
+    let forgotPassword = this.modal.create(ForgotPassword);
     forgotPassword.present();
   }
 
@@ -47,12 +47,13 @@ export class Login {
         let userImage = userData.profile_image;
         let userCountry = userData.country;
 
+        //this.storage.clear();
         this.storage.set('name', userName);
         this.storage.set('image', userImage);
         this.storage.set('country', userCountry);
-
-        this.navCtrl.setRoot(TabsPage);
       });
+
+      this.navCtrl.setRoot(TabsPage);
     }).catch(err => {
       this.showError(err);
     })

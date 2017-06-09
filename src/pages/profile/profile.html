@@ -56,10 +56,11 @@
       </ion-list-header>
 
       <ion-card class="card-width" no-margin margin-bottom *ngFor="let track of tracks_filter; let i = index">
-
-        <img class="image" src="{{track.cover_page}}">
-        <div class="card-title">{{track.title}}</div>
-        <div class="card-subtitle">{{track.artist}}</div>
+        <div (click)="viewTrack(track.$key)">
+          <img class="image" src="{{track.cover_page}}">
+          <div class="card-title">{{track.title}}</div>
+          <div class="card-subtitle">{{track.artist}}</div>
+        </div>
         <audio controls>
           <source src="{{track.audio}}" type="audio/mp3">
         </audio>

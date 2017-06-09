@@ -1,3 +1,5 @@
+import { SmartAudio } from './../../providers/smart-audio';
+import { ViewTrack } from './../view-track/view-track';
 import { Storage } from '@ionic/storage';
 import { Lists } from './../lists/lists';
 import { Component } from '@angular/core';
@@ -33,7 +35,8 @@ export class TracksList {
   userName: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private lc: LoadingController,
-    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController, private storage: Storage) {
+    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController, private storage: Storage,
+    private smartAudio: SmartAudio) {
     this.list = this.navParams.get("id");
     this.title = this.navParams.get("title");
     this.user = this.navParams.get("user");
@@ -212,6 +215,7 @@ export class TracksList {
   }
 
   likeTrack(track) {
+    this.smartAudio.play('likeButton');
     this.db.likeTrack(track);
   }
 
@@ -254,4 +258,8 @@ export class TracksList {
     modal.present();
   }
 
+  viewTrack(trackid) {
+    let modal = this.modal.create(ViewTrack, { trackid: trackid });
+    modal.present();
+  }
 }

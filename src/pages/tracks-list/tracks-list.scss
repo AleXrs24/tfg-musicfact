@@ -12,22 +12,20 @@ page-tracks-list {
         .card-title {
             background-color: rgba(0, 0, 0, 0.7);
             position: absolute;
-            width: 100%;
-            top: 33%;
+            top: 7%;
             font-size: 1.5em;
             font-weight: bold;
             color: #fff;
-            text-align: center;
+            margin: 5%;
         }
 
         .card-subtitle {
             background-color: rgba(0, 0, 0, 0.7);
             position: absolute;
-            width: 100%;
-            top: 25%;
+            top: 0;
             font-size: 1.0em;
             color: #7C7C7C;
-            text-align: center;
+            margin: 5%;
         }
 
         .image {

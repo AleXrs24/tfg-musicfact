@@ -12,22 +12,19 @@ export class AuthService {
   private currentUser: firebase.User;
 
   constructor(private afAuth: AngularFireAuth, private pf: Platform, private fb: Facebook) {
-    afAuth.authState.subscribe((user: firebase.User) => {
-      if (!user) {
-        this.currentUser = null;
-        return;
-      }
-      this.currentUser = user;
-      console.log("Current User is: ", this.currentUser.email);
-    });
+    
   }
 
   isAuthenticated() {
     return Observable.create(observer => {
-      this.afAuth.authState.subscribe(authData => {
-        if (authData) {
+      this.afAuth.authState.subscribe((user: firebase.User) => {
+        if (user) {
+          this.currentUser = user;
+          console.log("Current User is: ", this.currentUser.email);
           observer.next();
         } else {
+          this.currentUser = null;
+          console.log("Current User is: ", this.currentUser);
           observer.error();
         }
       });
@@ -58,7 +55,7 @@ export class AuthService {
     return this.afAuth.auth.signInWithEmailAndPassword(form.email, form.password);
   }
 
-  sendPasswordResetEmail(form): firebase.Promise<any>{
+  sendPasswordResetEmail(form): firebase.Promise<any> {
     return this.afAuth.auth.sendPasswordResetEmail(form.email);
   }
 

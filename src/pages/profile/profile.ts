@@ -1,3 +1,5 @@
+import { SmartAudio } from './../../providers/smart-audio';
+import { ViewTrack } from './../view-track/view-track';
 import { Storage } from '@ionic/storage';
 import { Lists } from './../lists/lists';
 import { Comments } from './../comments/comments';
@@ -40,7 +42,8 @@ export class Profile {
   userName: string;
   
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private auth: AuthService,
-    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController, private storage: Storage) {
+    private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController, private storage: Storage,
+    private smartAudio: SmartAudio) {
 
     this.user = navParams.data;
   }
@@ -245,6 +248,7 @@ export class Profile {
   }
 
   likeTrack(track) {
+    this.smartAudio.play('likeButton');
     this.db.likeTrack(track);
   }
 
@@ -301,6 +305,11 @@ export class Profile {
 
   goToTracksList(list, title) {
     this.navCtrl.push(TracksList, { id: list, title: title, user: this.user });
+  }
+
+  viewTrack(trackid) {
+    let modal = this.modal.create(ViewTrack, { trackid: trackid });
+    modal.present();
   }
 
 }

@@ -31,7 +31,7 @@
     <div [ngSwitch]="search">
         <ion-list *ngSwitchCase="'tracks'">
 
-            <ion-item *ngFor="let track of tracks" text-wrap>
+            <ion-item *ngFor="let track of tracks" text-wrap (click)="viewTrack(track.$key)">
                 <ion-avatar item-left>
                     <img src="{{track.cover_page}}">
                 </ion-avatar>

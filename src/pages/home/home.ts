@@ -1,5 +1,6 @@
+import { SmartAudio } from './../../providers/smart-audio';
+import { ViewTrack } from './../view-track/view-track';
 import { Storage } from '@ionic/storage';
-import { Start } from './../auth/start/start';
 import { Component } from '@angular/core';
 import { NavController, LoadingController, ModalController, ActionSheetController, AlertController } from 'ionic-angular';
 
@@ -30,7 +31,8 @@ export class HomePage {
   userName: string;
   
   constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService,
-    private lc: LoadingController, private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private storage: Storage) {
+    private lc: LoadingController, private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private storage: Storage,
+    private smartAudio: SmartAudio) {
   }
 
   ionViewDidLoad() {
@@ -100,11 +102,8 @@ export class HomePage {
     });
   }
 
-  goToStart() {
-    this.navCtrl.push(Start);
-  }
-
   likeTrack(track) {
+    this.smartAudio.play('likeButton');
     this.db.likeTrack(track);
   }
 
@@ -243,6 +242,11 @@ export class HomePage {
 
   profileView($event, user) {
     this.navCtrl.push(Profile, user);
+  }
+
+  viewTrack(trackid) {
+    let modal = this.modal.create(ViewTrack, { trackid: trackid });
+    modal.present();
   }
 
   // ionViewDidLoad() {

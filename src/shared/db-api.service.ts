@@ -1,6 +1,6 @@
 import { Storage } from '@ionic/storage';
 import { Injectable } from "@angular/core";
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { AuthService } from './../providers/auth-service';
 import { Platform } from 'ionic-angular';
 import firebase from 'firebase';
@@ -20,6 +20,7 @@ export class DbApiService {
   nfollowing: FirebaseListObservable<any[]>;
   comments: FirebaseListObservable<any[]>;
   tracksList: FirebaseListObservable<any[]>;
+  track: FirebaseObjectObservable<any>;
 
   constructor(private db: AngularFireDatabase, private auth: AuthService, private platform: Platform, private storage: Storage) {
 
@@ -33,6 +34,11 @@ export class DbApiService {
 
   getCurrentUser() {
     return this.auth.getCurrentUser();
+  }
+
+  getTrack(idTrack): FirebaseObjectObservable<any> {
+    this.track = this.db.object('/tracks/' + idTrack);
+    return this.track;
   }
 
   getTracks(): FirebaseListObservable<any[]> {
@@ -86,6 +92,7 @@ export class DbApiService {
 
   signInWithFacebook(facebookData): firebase.Promise<void> {
     if (this.platform.is('cordova')) {
+      //this.storage.clear();
       this.storage.set('name', facebookData.displayName);
       this.storage.set('image', facebookData.photoURL);
       return this.db.list('/users').update(facebookData.uid, {
@@ -94,6 +101,7 @@ export class DbApiService {
         profile_image: facebookData.photoURL
       });
     } else {
+      //this.storage.clear();
       this.storage.set('name', facebookData.user.displayName);
       this.storage.set('image', facebookData.user.photoURL);
       return this.db.list('/users').update(facebookData.user.uid, {
@@ -237,7 +245,7 @@ export class DbApiService {
     let track_id;
     let currentUserId = this.auth.getCurrentUser().uid;
     track_id = this.tracks.push({
-      artist: artist, artist_img: artist_img, audio: audio, cover_page: coverpage, privacy: track.privacy,
+      artist: artist, artist_img: artist_img, audio: audio, cover_page: coverpage, privacy: track.privacy, artist_id: currentUserId,
       tag: track.tag, title: track.title, comments: 0, likes: 0, reposts: 0
     }).key;
 

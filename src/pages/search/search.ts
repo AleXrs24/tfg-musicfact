@@ -1,5 +1,6 @@
+import { ViewTrack } from './../view-track/view-track';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
 import { Profile } from './../profile/profile';
 import * as _ from 'lodash';
@@ -17,7 +18,7 @@ export class SearchPage {
   isFollowed: boolean[] = [];
   search: string = "tracks";
 
-  constructor(public navCtrl: NavController, private db: DbApiService) {
+  constructor(public navCtrl: NavController, private db: DbApiService, private modal: ModalController) {
 
   }
 
@@ -32,6 +33,9 @@ export class SearchPage {
   ionViewDidLoad() {
     this.db.getTracks().subscribe(resp => {
       this.tracks = resp;
+      this.tracks = this.tracks.filter((item) => {
+        return (item.privacy != 'Privada');
+      })
     });
     this.db.getUsers().subscribe(resp => {
       this.users = resp;
@@ -91,5 +95,10 @@ export class SearchPage {
 
   profileView($event, user) {
     this.navCtrl.push(Profile, user);
+  }
+
+  viewTrack(trackid) {
+    let modal = this.modal.create(ViewTrack, { trackid: trackid });
+    modal.present();
   }
 }

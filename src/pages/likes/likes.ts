@@ -1,5 +1,6 @@
+import { ViewTrack } from './../view-track/view-track';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
 import { AuthService } from './../../providers/auth-service';
 import * as _ from 'lodash';
@@ -13,7 +14,7 @@ export class LikesPage {
   tracks: any[];
   tracks_filter: any[] = [];
 
-  constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService) {
+  constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService, private modal: ModalController) {
 
   }
 
@@ -30,6 +31,11 @@ export class LikesPage {
         }
       })
     })
+  }
+
+  viewTrack(trackid) {
+    let modal = this.modal.create(ViewTrack, { trackid: trackid });
+    modal.present();
   }
 
 }

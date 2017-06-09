@@ -1,3 +1,4 @@
+import { SmartAudio } from './../providers/smart-audio';
 import { AuthService } from './../providers/auth-service';
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
@@ -14,17 +15,14 @@ export class MyApp {
   rootPage: any = Start;
   isAppInitialized: boolean = false;
 
-  constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private auth: AuthService) {
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
-    });
+  constructor(private platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private auth: AuthService,
+  private smartAudio: SmartAudio) {
+
   }
 
   ngOnInit() {
     this.platform.ready().then(() => {
+
       this.auth.isAuthenticated().subscribe(data => {
         if (!this.isAppInitialized) {
           this.nav.setRoot(TabsPage);
@@ -33,6 +31,11 @@ export class MyApp {
       }, err => {
         this.nav.setRoot(Start);
       });
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+      this.smartAudio.preload('likeButton', 'assets/audio/soundEffect.m4a')
     });
   }
 
