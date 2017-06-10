@@ -6,6 +6,8 @@
   <div class="card-title">{{title}}</div>
   <div class="card-subtitle" (click)="profileView($event)">{{artist}}</div>
 
+  <div class="tag">#{{tag}}</div>
+
   <ion-row class="buttons">
     <ion-col col-3>
       <button *ngIf="isLike" color="white" ion-button icon-left clear (click)="disLikeTrack()">

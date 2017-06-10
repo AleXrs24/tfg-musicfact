@@ -28,12 +28,15 @@ export class ViewTrack {
   isLike: boolean;
   isRepost: boolean;
   artist: string;
+  tag: string;
   title: string;
   audio: string;
   cover_page: string;
   nlikes: string;
   nreposts: string;
   ncomments: string;
+  users: any;
+  dataUser: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private ac: AlertController, private as: ActionSheetController,
     private modal: ModalController, private toast: ToastController, private storage: Storage, private vc: ViewController, private smartAudio: SmartAudio) {
@@ -54,7 +57,15 @@ export class ViewTrack {
       this.nlikes = this.dataTrack.likes;
       this.nreposts = this.dataTrack.reposts;
       this.ncomments = this.dataTrack.comments;
+      this.tag = this.dataTrack.tag;
     });
+
+    this.db.getUsers().subscribe(resp => {
+      this.users = resp;
+    });
+    this.dataUser = _.find(this.users, (item) => {
+      return item.$key == this.dataTrack.artist_id;
+    })
 
     this.db.getLikes().subscribe(resp => {
       this.likes = resp;
@@ -235,7 +246,7 @@ export class ViewTrack {
   }
 
   profileView($event) {
-    this.navCtrl.push(Profile, this.dataTrack.artist_id);
+    this.navCtrl.push(Profile, this.dataUser);
   }
 
   close() {

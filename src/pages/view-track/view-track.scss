@@ -11,6 +11,7 @@ page-view-track {
         font-weight: bold;
         color: #fff;
         margin: 7%;
+        padding: 1%;
     }
 
     .card-subtitle {
@@ -20,16 +21,27 @@ page-view-track {
         font-size: 1.3em;
         color: #7C7C7C;
         margin: 7%;
+        padding: 1%;
     }
 
     .buttons {
         background-color: rgba(0, 0, 0, 0);
         position: absolute;
         bottom: 0;
-        margin: 2%;
+        margin: 7%;
         ion-icon {
-            font-size: 30px;
+            font-size: 35px;
         }
+    }
+
+    .tag {
+        background-color: rgba(0, 0, 0, 0.7);
+        position: absolute;
+        bottom: 10%;
+        font-size: 1.0em;
+        color: white;
+        margin: 7%;
+        padding: 1%;
     }
 
     .close-button {
