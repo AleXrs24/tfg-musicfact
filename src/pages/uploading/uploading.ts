@@ -60,7 +60,7 @@ export class Uploading {
     // Listen for state changes, errors, and completion of the upload.
     uploadTask_audio.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       (snapshot) => {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        // Get task progress, includng the number of bytes uploaded and the total number of bytes to be uploaded
         this.progress_audio = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
         console.log('Upload AUDIO is ' + this.progress_audio + '% done');
         switch (snapshot.state) {
