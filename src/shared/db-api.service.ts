@@ -21,6 +21,7 @@ export class DbApiService {
   comments: FirebaseListObservable<any[]>;
   tracksList: FirebaseListObservable<any[]>;
   track: FirebaseObjectObservable<any>;
+  notifications: FirebaseListObservable<any[]>;
 
   constructor(private db: AngularFireDatabase, private auth: AuthService, private platform: Platform, private storage: Storage) {
 
@@ -31,6 +32,23 @@ export class DbApiService {
   //   console.log(snapshot.key)
   //   console.log(snapshot.val())
   // });
+
+  saveUserToken(token) {
+    this.db.database.ref('/users/' + this.auth.getCurrentUser().uid).child('token').set(token);
+  }
+
+  addNotification(userId) {
+    this.db.database.ref('/users/' + userId + '/notifications/').child(this.auth.getCurrentUser().uid).child('time').set(new Date().getTime());
+  }
+
+  removeNotification(userId) {
+    this.db.database.ref('/users/' + userId + '/notifications/' + this.auth.getCurrentUser().uid).remove();
+  }
+
+  getNotifications(): FirebaseListObservable<any[]> {
+    this.notifications = this.db.list('/users/' + this.auth.getCurrentUser().uid + '/notifications');
+    return this.notifications;
+  }
 
   getCurrentUser() {
     return this.auth.getCurrentUser();

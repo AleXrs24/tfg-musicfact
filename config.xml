@@ -87,4 +87,7 @@
         <variable name="APP_ID" value="1894820887473130" />
         <variable name="APP_NAME" value="469a2282eed86fd83f07a8be091468d9" />
     </plugin>
+    <plugin name="phonegap-plugin-push" spec="~1.10.5">
+        <variable name="SENDER_ID" value="847404429996" />
+    </plugin>
 </widget>

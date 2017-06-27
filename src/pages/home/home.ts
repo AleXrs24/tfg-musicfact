@@ -1,3 +1,4 @@
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { SmartAudio } from './../../providers/smart-audio';
 import { ViewTrack } from './../view-track/view-track';
 import { Storage } from '@ionic/storage';
@@ -29,10 +30,10 @@ export class HomePage {
   tracks_reposts: any[];
   userData: any[] = [];
   userName: string;
-  
+
   constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService,
     private lc: LoadingController, private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private storage: Storage,
-    private smartAudio: SmartAudio) {
+    private smartAudio: SmartAudio, private socialSharing: SocialSharing) {
   }
 
   ionViewDidLoad() {
@@ -213,22 +214,14 @@ export class HomePage {
           }
         },
         {
-          text: 'Share',
+          text: 'Compartir',
           icon: 'share',
-          cssClass: 'share',
           handler: () => {
-            console.log('Share clicked');
+            //this.share(track);
           }
         },
         {
-          text: 'Play',
-          icon: 'arrow-dropright-circle',
-          handler: () => {
-            console.log('Play clicked');
-          }
-        },
-        {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel', // will always sort to be on the bottom
           icon: 'close',
           handler: () => {
@@ -248,6 +241,18 @@ export class HomePage {
     let modal = this.modal.create(ViewTrack, { trackid: trackid });
     modal.present();
   }
+
+  // share(track) {
+  //   let options = {
+  //     message: track.title,
+  //     subject: null, 
+  //     files: ['data:image/png;base64,R0lGODlhDAAMALMBAP8AAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAUKAAEALAAAAAAMAAwAQAQZMMhJK7iY4p3nlZ8XgmNlnibXdVqolmhcRQA7'],
+  //     url: track.audio,
+  //     chooserTitle: 'Compartir con'
+  //   }
+  //   this.socialSharing.shareWithOptions(options);
+
+  // }
 
   // ionViewDidLoad() {
   //   for (let track of this.tracks) {

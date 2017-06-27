@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
@@ -21,6 +22,7 @@ import { Login } from './../pages/auth/login/login';
 import { SignUp } from './../pages/auth/sign-up/sign-up';
 import { ForgotPassword } from './../pages/auth/forgot-password/forgot-password';
 import { ViewTrack } from './../pages/view-track/view-track';
+import { Notifications } from './../pages/notifications/notifications';
 
 import { ProgressBar } from './../components/progress-bar/progress-bar';
 import { ChartsModule } from 'ng2-charts';
@@ -39,6 +41,9 @@ import { Camera } from '@ionic-native/camera';
 import { ActionSheet } from '@ionic-native/action-sheet';
 import { IonicStorageModule } from '@ionic/storage';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { Push } from '@ionic-native/push'
 
 import { DbApiService } from './../shared/db-api.service';
 import { AuthService } from '../providers/auth-service';
@@ -51,6 +56,27 @@ export const firebaseConfig = {
   projectId: "soundbase-43813",
   storageBucket: "soundbase-43813.appspot.com",
   messagingSenderId: "847404429996"
+};
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'eaf14567'
+  },
+  'push': {
+    'sender_id': '847404429996',
+    'pluginConfig': {
+      'ios': {
+        'badge': true,
+        'sound': true
+      },
+      'android': {
+        'iconColor': '#343434',
+        'sound': true,
+        'vibrate': true,
+
+      }
+    }
+  }
 };
 
 @NgModule({
@@ -74,11 +100,14 @@ export const firebaseConfig = {
     SignUp,
     Login,
     ForgotPassword,
-    ViewTrack
+    ViewTrack,
+    Notifications
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings),
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
@@ -105,7 +134,8 @@ export const firebaseConfig = {
     SignUp,
     Login,
     ForgotPassword,
-    ViewTrack
+    ViewTrack,
+    Notifications
   ],
   providers: [
     StatusBar,
@@ -120,7 +150,9 @@ export const firebaseConfig = {
     AndroidPermissions,
     Camera,
     ActionSheet,
-    NativeAudio
+    NativeAudio,
+    SocialSharing,
+    Push
   ]
 })
 export class AppModule { }

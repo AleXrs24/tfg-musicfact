@@ -1,3 +1,4 @@
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { SmartAudio } from './../../providers/smart-audio';
 import { ViewTrack } from './../view-track/view-track';
 import { Storage } from '@ionic/storage';
@@ -10,6 +11,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
 import { TracksList } from './../tracks-list/tracks-list';
 import * as _ from 'lodash';
+//import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { Push, PushToken } from '@ionic/cloud-angular';
 
 /**
  * Generated class for the Profile page.
@@ -40,10 +43,10 @@ export class Profile {
   lists_filter: any[];
   currentUser: any;
   userName: string;
-  
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private auth: AuthService,
     private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController, private storage: Storage,
-    private smartAudio: SmartAudio) {
+    private smartAudio: SmartAudio, private push: Push, public http: Http) {
 
     this.user = navParams.data;
   }
@@ -286,12 +289,39 @@ export class Profile {
     this.db.unRepostTrack(track);
   }
 
-  followUser(userId) {
-    this.db.followUser(userId);
+  followUser(user) {
+    this.db.followUser(user.$key);
+    this.db.addNotification(user.$key);
+
+    let url = 'https://fcm.googleapis.com/fcm/send';
+
+    let body =
+      {
+        "to": user.token,
+        "notification": {
+          "title": "¡Tienes un nuevo seguidor!",
+          "body": this.userName
+        }
+      };
+
+    let headers: Headers = new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': 'key=' + 'AIzaSyCR2GL7qx22hbSnNhItHUNggffw1DzeGP8'
+    });
+    let options = new RequestOptions({ headers: headers });
+
+    console.log(JSON.stringify(headers));
+
+    this.http.post(url, body, options).map(response => {
+      return response;
+    }).subscribe(data => {
+      console.log(data);
+    });
   }
 
   unFollowUser(userId) {
     this.db.unFollowUser(userId);
+    this.db.removeNotification(userId);
   }
 
   viewUsers(user, follow) {

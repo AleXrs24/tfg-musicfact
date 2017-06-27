@@ -1,3 +1,4 @@
+import { Notifications } from './../notifications/notifications';
 import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
@@ -8,6 +9,7 @@ import { Profile } from './../profile/profile';
 import { Trends } from './../trends/trends';
 import { Start } from './../auth/start/start';
 import * as _ from 'lodash';
+import { Push, PushToken } from '@ionic/cloud-angular';
 
 @Component({
   selector: 'page-menu',
@@ -19,7 +21,7 @@ export class MenuPage {
   userName: string;
   userImage: string;
 
-  constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService, private storage: Storage) {
+  constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService, private storage: Storage, private push: Push) {
   }
 
   ionViewDidLoad() {
@@ -52,7 +54,13 @@ export class MenuPage {
     this.navCtrl.push(Trends);
   }
 
+  viewNotifications() {
+    this.navCtrl.push(Notifications)
+  }
+
   signOut() {
+    this.push.unregister();
+    
     this.auth.signOut().then(() => {
       this.storage.clear();
       this.navCtrl.parent.parent.setRoot(Start)
