@@ -23,6 +23,7 @@ import { SignUp } from './../pages/auth/sign-up/sign-up';
 import { ForgotPassword } from './../pages/auth/forgot-password/forgot-password';
 import { ViewTrack } from './../pages/view-track/view-track';
 import { Notifications } from './../pages/notifications/notifications';
+import { NotificationsConfig } from './../pages/notifications-config/notifications-config';
 
 import { ProgressBar } from './../components/progress-bar/progress-bar';
 import { ChartsModule } from 'ng2-charts';
@@ -70,10 +71,7 @@ const cloudSettings: CloudSettings = {
         'sound': true
       },
       'android': {
-        'iconColor': '#343434',
-        'sound': true,
-        'vibrate': true,
-
+        'iconColor': '#FF005E'
       }
     }
   }
@@ -101,7 +99,8 @@ const cloudSettings: CloudSettings = {
     Login,
     ForgotPassword,
     ViewTrack,
-    Notifications
+    Notifications,
+    NotificationsConfig
   ],
   imports: [
     BrowserModule,
@@ -135,7 +134,8 @@ const cloudSettings: CloudSettings = {
     Login,
     ForgotPassword,
     ViewTrack,
-    Notifications
+    Notifications,
+    NotificationsConfig
   ],
   providers: [
     StatusBar,

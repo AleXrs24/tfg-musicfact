@@ -5,15 +5,14 @@
   Ionic pages and navigation.
 -->
 
-
-
-
-
-
-
 <ion-content class="card-background-page">
   <ion-navbar color="white">
     <ion-title>Perfil</ion-title>
+    <ion-buttons end>
+      <button ion-button clear (click)="goTabs()">
+        <ion-icon color="app" name="home"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
   <ion-item no-lines text-wrap>
     <ion-avatar item-left>
@@ -22,11 +21,11 @@
     <h2>{{user.name}}</h2>
     <p>{{user.country}}</p>
     <div *ngIf="user.$key != currentUser" item-right>
-      <button *ngIf="!isFollowed" ion-button small icon-left color="app" (click)="followUser(user)">
+      <button *ngIf="!isFollowed" ion-button small icon-left color="app" (click)="followUser()">
         <ion-icon name="person-add" ></ion-icon>
         Seguir
       </button>
-      <button *ngIf="isFollowed" ion-button small icon-left outline color="app" (click)="unFollowUser(user.$key)">
+      <button *ngIf="isFollowed" ion-button small icon-left outline color="app" (click)="unFollowUser()">
         <ion-icon name="done-all" ></ion-icon>
         Siguiendo
       </button>
@@ -36,7 +35,7 @@
   <ion-toolbar color="white">
     <ion-segment [(ngModel)]="profile" color="app">
       <ion-segment-button value="tracks">
-        <ion-icon name="musical-notes"></ion-icon>
+        <ion-icon name="headset"></ion-icon>
       </ion-segment-button>
 
       <ion-segment-button value="lists">

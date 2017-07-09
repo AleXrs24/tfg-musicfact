@@ -4,6 +4,12 @@ page-home {
         ion-card {
             position: relative;
         }
+        .message {
+            text-align: center;
+            font-size: 4rem;
+            margin: 3%;
+            color: #7C7C7C;
+        }
 
         .card-width {
             width: 100%;

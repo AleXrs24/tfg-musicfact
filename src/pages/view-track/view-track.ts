@@ -1,3 +1,4 @@
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { SmartAudio } from './../../providers/smart-audio';
 import { Comments } from './../comments/comments';
 import { Profile } from './../profile/profile';
@@ -39,7 +40,8 @@ export class ViewTrack {
   dataUser: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private ac: AlertController, private as: ActionSheetController,
-    private modal: ModalController, private toast: ToastController, private storage: Storage, private vc: ViewController, private smartAudio: SmartAudio) {
+    private modal: ModalController, private toast: ToastController, private storage: Storage, private vc: ViewController, private smartAudio: SmartAudio,
+    private socialSharing: SocialSharing) {
     this.trackId = this.navParams.get("trackid");
   }
 
@@ -198,6 +200,14 @@ export class ViewTrack {
                                     attention.present();
                                   } else {
                                     this.db.newList(data, this.trackId, this.dataTrack.cover_page, title, this.userName);
+                                    let conf = this.toast.create({
+                                      message: 'Lista creada con éxito',
+                                      duration: 3000,
+                                      position: 'bottom',
+                                      showCloseButton: true,
+                                      closeButtonText: 'Ok'
+                                    });
+                                    conf.present();
                                   }
                                 }
                               });
@@ -218,22 +228,14 @@ export class ViewTrack {
           }
         },
         {
-          text: 'Share',
+          text: 'Compartir',
           icon: 'share',
-          cssClass: 'share',
           handler: () => {
-            console.log('Share clicked');
+            this.share(this.dataTrack);
           }
         },
         {
-          text: 'Play',
-          icon: 'arrow-dropright-circle',
-          handler: () => {
-            console.log('Play clicked');
-          }
-        },
-        {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel', // will always sort to be on the bottom
           icon: 'close',
           handler: () => {
@@ -243,6 +245,17 @@ export class ViewTrack {
       ]
     });
     more.present();
+  }
+
+  share(track) {
+    let options = {
+      message: track.title,
+      subject: track.artist,
+      files: null,
+      url: track.audio,
+      chooserTitle: 'Compartir con'
+    }
+    this.socialSharing.shareWithOptions(options);
   }
 
   profileView($event) {

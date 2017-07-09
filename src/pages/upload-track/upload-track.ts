@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
@@ -7,6 +7,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { DbApiService } from './../../shared/db-api.service';
 import { Uploading } from './../uploading/uploading';
+import * as _ from 'lodash';
 
 /**
  * Generated class for the UploadTrack page.
@@ -31,7 +32,8 @@ export class UploadTrack {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private fc: FileChooser,
     private db: DbApiService, private fp: FilePath, private ap: AndroidPermissions, private camera: Camera,
-    private as: ActionSheet, private modalCtrl: ModalController, private lc: LoadingController) {
+    private as: ActionSheet, private modalCtrl: ModalController, private lc: LoadingController, private ac: AlertController,
+    private toast: ToastController) {
     this.coverpage = "assets/img/start.jpg";
     this.track = {
       title: '',
@@ -65,8 +67,8 @@ export class UploadTrack {
           sourceType: this.camera.PictureSourceType.CAMERA,
           destinationType: this.camera.DestinationType.DATA_URL,
           encodingType: this.camera.EncodingType.JPEG,
-          targetWidth: 400,
-          targetHeight: 300,
+          targetWidth: 640,
+          targetHeight: 480,
           mediaType: this.camera.MediaType.PICTURE,
           correctOrientation: true
         };
@@ -77,8 +79,8 @@ export class UploadTrack {
           sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
           destinationType: this.camera.DestinationType.DATA_URL,
           encodingType: this.camera.EncodingType.JPEG,
-          targetWidth: 400,
-          targetHeight: 300,
+          targetWidth: 640,
+          targetHeight: 480,
           mediaType: this.camera.MediaType.PICTURE,
           correctOrientation: true
         };
@@ -88,9 +90,6 @@ export class UploadTrack {
   }
 
   updateCoverPage(options) {
-    // let loading = this.lc.create({
-    //   content: 'Cargando...'
-    // });
     this.camera.getPicture(options).then((data) => {
       this.coverpage = "data:image/jpeg;base64," + data;
       this.coverpageB64 = data;
@@ -123,14 +122,36 @@ export class UploadTrack {
   }
 
   uploadTrack() {
-    let modal = this.modalCtrl.create(Uploading, {
-      audio_blob: this.audio_blob, coverpageB64: this.coverpageB64,
-      newCoverPage: this.newCoverPage, track: this.track, coverpage: this.coverpage
+    let audio = ['.mp3', '.wav', '.aiff', '.flac', '.alac', '.ogg', '.wma', '.aac'];
+    let ext = this.nativepath.substring(this.nativepath.lastIndexOf('.'));
+    let value: boolean = false;
+    value = _.some(audio, (item) => {
+      return ext == item;
     });
-    modal.present();
-    modal.onDidDismiss(() => {
-      this.navCtrl.popToRoot();
-    });
+    if (value) {
+      let modal = this.modalCtrl.create(Uploading, {
+        audio_blob: this.audio_blob, coverpageB64: this.coverpageB64,
+        newCoverPage: this.newCoverPage, track: this.track, coverpage: this.coverpage
+      });
+      modal.present();
+      modal.onDidDismiss(() => {
+        let conf = this.toast.create({
+          message: 'Pista de audio subida con éxito',
+          duration: 3000,
+          position: 'bottom',
+          showCloseButton: true,
+          closeButtonText: 'Ok'
+        });
+        conf.present();
+        this.navCtrl.popToRoot();
+      });
+    } else {
+      let alert = this.ac.create({
+        title: 'Formato de audio no aceptado',
+        subTitle: 'Por favor, elija un archivo con una extensión de audio válida',
+        buttons: ['De acuerdo']
+      });
+      alert.present();
+    }
   }
-
 }

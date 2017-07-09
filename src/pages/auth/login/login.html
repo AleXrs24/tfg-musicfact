@@ -1,5 +1,5 @@
 <ion-content class="login">
-  <div class="content">
+  <div *ngIf="!isClicked" class="content">
     <form [formGroup]="myForm" (ngSubmit)="login()" novalidate>
       <ion-list inset>
         <ion-item>
@@ -17,8 +17,8 @@
         </ion-item>
       </ion-list>
 
-      <button ion-button class="cancel-btn" color="primary" type="reset" (click)="close()">Cancelar</button>
-      <button ion-button class="log-in-btn" color="app2" type="submit" [disabled]="myForm.invalid">Iniciar sesión</button>
+      <button ion-button class="cancel-btn" color="light" type="reset" (click)="close()">Cancelar</button>
+      <button ion-button class="log-in-btn" color="app" type="submit" [disabled]="myForm.invalid">Iniciar sesión</button>
     </form>
 
     <div padding class="forgot-password" (click)="openForgotPassword()">

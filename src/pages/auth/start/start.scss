@@ -1,7 +1,8 @@
 page-start {
     ion-content {
-        background-image: url('../assets/img/start.jpg');
+        background-image: url('../assets/img/cover.png');
         background-size: cover;
+        background-position: center;
     }
 
     .logo {
@@ -16,22 +17,20 @@ page-start {
     }
 
     .social-btn {
-        margin: auto;
-        width: 70%;
-        margin-bottom: 5%;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
     }
 
     .sign-up-btn {
-        margin-top: 5%;
+        margin-top: 130%;
         margin-left: 10%;
-        margin-bottom: 50%;
         width: 35%;
     }
 
     .log-in-btn {
-        margin-top: 5%;
+        margin-top: 130%;
         margin-left: 10%;
-        margin-bottom: 50%;
         width: 35%;
     }
 }

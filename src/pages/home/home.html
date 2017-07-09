@@ -1,5 +1,9 @@
 <ion-content class="card-background-page">
-
+  <div class="message" *ngIf="ntracks == 0">
+    <ion-icon color="app" name="search" (click)="goToSearch()"></ion-icon>
+    <h5>Sigue a tus artistas favoritos para ver sus canciones aquí</h5>
+  </div>
+  
   <ion-card class="card-width" no-margin margin-bottom *ngFor="let track of tracks_filter; let i = index">
 
     <ion-item (click)="profileView($event, userData[i])">

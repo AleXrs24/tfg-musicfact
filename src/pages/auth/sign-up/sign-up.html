@@ -7,7 +7,7 @@
                 </ion-thumbnail>
                 <h3>Cambiar foto</h3>
                 <ion-fab item-right right>
-                    <button ion-fab color="app2" (click)="selectOption()">
+                    <button ion-fab color="app" (click)="selectOption()">
                             <ion-icon name="camera"></ion-icon>
                         </button>
                 </ion-fab>
@@ -55,8 +55,8 @@
                     <p color="danger" ion-text *ngIf="myForm.get('country').hasError('maxlength')">Máximo 10 caracteres</p>
                 </ion-item>
             </ion-list>
-            <button ion-button class="cancel-btn" type="reset" color="primary" (click)="close()">Cancelar</button>
-            <button ion-button class="signup-btn" type="submit" [disabled]="myForm.invalid" color="app2">Registrarse</button>
+            <button ion-button class="cancel-btn" type="reset" color="light" (click)="close()">Cancelar</button>
+            <button ion-button class="signup-btn" type="submit" [disabled]="myForm.invalid" color="app">Registrarse</button>
         </form>
 
 

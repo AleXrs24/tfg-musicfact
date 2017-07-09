@@ -34,31 +34,34 @@ $colors: (
   app:        #FF005E,
   app2:       rgb(62, 171, 174),
   facebook:   #384ff5,
-  white:    #FFFFFF
+  white:    #FFFFFF,
+  twitter:    #4db9ec,
 );
 
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
-
-
+$tabs-ios-tab-icon-color-active: color($colors, app);
+$tabs-ios-tab-icon-size: 3.0rem;
+$button-ios-border-radius: 5px;
+$text-input-ios-highlight-color: color($colors, app);
+$label-ios-text-color-focused: color($colors, app);
+$alert-ios-button-text-color: color($colors, app);
+$list-inset-ios-border-radius: 5px;
+$loading-ios-spinner-color: color($colors, app);
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-$tabs-md-tab-icon-color-active: #FF005E;
+$tabs-md-tab-icon-color-active: color($colors, app);
 $tabs-md-tab-icon-size: 3.0rem;
 $button-md-border-radius: 5px;
-//$popover-md-width: 93%;
-//$popover-md-min-height: 500px;
-//$popover-md-max-height: 150px;
-//$popover-md-border-radius: 5px;
-$text-input-md-highlight-color: #FF005E;
-$label-md-text-color-focused: #FF005E;
-$alert-md-button-text-color: #FF005E;
+$text-input-md-highlight-color: color($colors, app);
+$label-md-text-color-focused: color($colors, app);
+$alert-md-button-text-color: color($colors, app);
 $list-inset-md-border-radius: 5px;
+$loading-md-spinner-color: color($colors, app);
 
 
 

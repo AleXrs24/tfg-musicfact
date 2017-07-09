@@ -1,21 +1,24 @@
 <ion-content>
 
-  <div class="logo">
-    <div *ngIf="!isClicked" class="logo-icon">
-      LOGO
-    </div>
-  </div>
-
   <button *ngIf="!isClicked" ion-button color="light" class="sign-up-btn" (click)="openSignUp()">Registrarse</button>
-  <button *ngIf="!isClicked" ion-button color="light" class="log-in-btn" (click)="openLogin()">Iniciar sesión</button>
+  <button *ngIf="!isClicked" ion-button color="app" class="log-in-btn" (click)="openLogin()">Iniciar sesión</button>
 
-  <button *ngIf="!isClicked" ion-button icon-left block color="facebook" class="social-btn" (click)="signInWithFacebook()">
-    <ion-icon name="logo-facebook"></ion-icon>
-    Iniciar sesión con Facebook
-  </button>
-  <!--<button *ngIf="!isClicked" ion-button icon-left block color="danger" class="social-btn" (click)="signInWithGoogle()">
-      <ion-icon name="logo-googleplus"></ion-icon>
-      Iniciar sesión con Google+
-    </button>-->
+  <ion-row *ngIf="!isClicked" margin-top>
+    <ion-col col-2 offset-2>
+      <button ion-button icon-only class="social-btn" color="facebook" (click)="signInWithFacebook()">
+            <ion-icon color="light" name="logo-facebook"></ion-icon>
+          </button>
+    </ion-col>
+    <ion-col col-2 offset-1>
+      <button ion-button icon-only class="social-btn" color="danger">
+            <ion-icon color="white" name="logo-googleplus"></ion-icon>
+          </button>
+    </ion-col>
+    <ion-col col-2 offset-1>
+      <button ion-button icon-only class="social-btn" color="twitter">
+            <ion-icon color="light" name="logo-twitter"></ion-icon>
+          </button>
+    </ion-col>
+  </ion-row>
 
 </ion-content>

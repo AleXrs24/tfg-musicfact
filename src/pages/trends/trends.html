@@ -14,12 +14,12 @@
 
 
 <ion-content>
-  <ion-card>
+  <ion-card class="card-width" no-margin>
     <ion-card-header text-wrap>
       Descubre qué tipo de música gusta más a los usuarios
     </ion-card-header>
     <ion-card-content>
-      <button ion-button block (click)="update()">Actualizar</button>
+      <button ion-button color="app2" block (click)="update()">Actualizar</button>
       <canvas baseChart
               [data]="chartData"
               [labels]="chartLabels"

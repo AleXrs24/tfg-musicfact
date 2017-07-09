@@ -1,3 +1,14 @@
 page-lists {
+    .cancel {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+    }
 
+    .message {
+        text-align: center;
+        font-size: 4rem;
+        margin: 3%;
+        color: #7C7C7C;
+    }
 }

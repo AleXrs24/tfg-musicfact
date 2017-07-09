@@ -1,6 +1,15 @@
 page-view-track {
     .image {
+        width: 100%;
+    }
+
+    .scroll {
         height: 100%;
+    }
+
+    .view {
+        height: 100%; 
+        width: 185%;
     }
 
     .card-title {

@@ -20,7 +20,7 @@ export class ForgotPassword {
   constructor(public navCtrl: NavController, public navParams: NavParams, private fb: FormBuilder, private lc: LoadingController, private auth: AuthService,
     private vc: ViewController, private toast: ToastController) {
     this.myForm = this.fb.group({
-      email: ['', [Validators.required]]
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 

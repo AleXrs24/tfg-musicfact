@@ -1,0 +1,48 @@
+<!--
+  Generated template for the NotificationsConfig page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Config. notificaciones</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+
+    <ion-item>
+      <ion-label>Notificaciones emergentes</ion-label>
+      <ion-toggle color="app" [(ngModel)]="globalConfig"></ion-toggle>
+    </ion-item>
+
+    <ion-item no-lines>
+      <ion-label>Nuevo seguidor</ion-label>
+      <ion-toggle color="app" [(ngModel)]="follower" disabled="true"></ion-toggle>
+    </ion-item>
+
+    <ion-item no-lines>
+      <ion-label>Nuevo post de un usuario seguido</ion-label>
+      <ion-toggle color="app" [(ngModel)]="post" disabled="true"></ion-toggle>
+    </ion-item>
+
+    <ion-item no-lines>
+      <ion-label>Me gusta en tu post</ion-label>
+      <ion-toggle color="app" [(ngModel)]="like" disabled="true"></ion-toggle>
+    </ion-item>
+
+    <ion-item no-lines>
+      <ion-label>Repost de tu post</ion-label>
+      <ion-toggle color="app" [(ngModel)]="repost" disabled="true"></ion-toggle>
+    </ion-item>
+
+  </ion-list>
+  <div class="saveConfig">
+    <button no-margin ion-button full color="app" (click)="saveChanges()">Guardar configuración</button>
+  </div>
+</ion-content>

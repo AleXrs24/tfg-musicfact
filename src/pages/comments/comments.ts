@@ -1,3 +1,4 @@
+import { Profile } from './../profile/profile';
 import { Storage } from '@ionic/storage';
 import { DbApiService } from './../../shared/db-api.service';
 import { Component } from '@angular/core';
@@ -23,6 +24,7 @@ export class Comments {
   userImage: string;
   userName: string;
   currentUserId: any;
+  users: any[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private vc: ViewController, private db: DbApiService, private storage: Storage) {
     this.trackId = this.navParams.get("track_id");
@@ -41,7 +43,10 @@ export class Comments {
     this.storage.get('name').then((val) => {
       this.userName = val;
     });
-    
+    this.db.getUsers().subscribe(resp => {
+      this.users = resp;
+    })
+
   }
 
   close() {
@@ -55,6 +60,14 @@ export class Comments {
 
   removeComment(commentId) {
     this.db.removeComment(this.trackId, commentId);
+  }
+
+  profileView($event, userId) {
+    let user;
+    user = _.find(this.users, (item) => {
+      return item.$key == userId;
+    });
+    this.navCtrl.push(Profile, user);
   }
 
 }

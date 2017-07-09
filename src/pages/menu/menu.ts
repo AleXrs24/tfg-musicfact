@@ -1,7 +1,8 @@
+import { NotificationsConfig } from './../notifications-config/notifications-config';
 import { Notifications } from './../notifications/notifications';
 import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { DbApiService } from './../../shared/db-api.service';
 import { AuthService } from './../../providers/auth-service';
 import { UploadTrack } from './../upload-track/upload-track';
@@ -9,7 +10,7 @@ import { Profile } from './../profile/profile';
 import { Trends } from './../trends/trends';
 import { Start } from './../auth/start/start';
 import * as _ from 'lodash';
-import { Push, PushToken } from '@ionic/cloud-angular';
+import { Push } from '@ionic/cloud-angular';
 
 @Component({
   selector: 'page-menu',
@@ -21,7 +22,8 @@ export class MenuPage {
   userName: string;
   userImage: string;
 
-  constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService, private storage: Storage, private push: Push) {
+  constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService, private storage: Storage, private push: Push,
+    private ac: AlertController, private toast: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -58,13 +60,43 @@ export class MenuPage {
     this.navCtrl.push(Notifications)
   }
 
+  viewNotificationsConfig() {
+    this.navCtrl.push(NotificationsConfig)
+  }
+
   signOut() {
-    this.push.unregister();
-    
-    this.auth.signOut().then(() => {
-      this.storage.clear();
-      this.navCtrl.parent.parent.setRoot(Start)
-    })
+    let confirm = this.ac.create({
+      title: 'Cerrar sesión',
+      message: '¿Estás seguro?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.push.unregister();
+
+            this.auth.signOut().then(() => {
+              this.storage.clear();
+              let toast = this.toast.create({
+                message: 'Has cerrado sesión',
+                duration: 3000,
+                position: 'top',
+                showCloseButton: true,
+                closeButtonText: 'Ok'
+              });
+              toast.present();
+              this.navCtrl.parent.parent.setRoot(Start)
+            })
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 }

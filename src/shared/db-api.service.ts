@@ -27,14 +27,8 @@ export class DbApiService {
 
   }
 
-  // this.item = db.object('/item', { preserveSnapshot: true });
-  // this.item.subscribe(snapshot => {
-  //   console.log(snapshot.key)
-  //   console.log(snapshot.val())
-  // });
-
-  saveUserToken(token) {
-    this.db.database.ref('/users/' + this.auth.getCurrentUser().uid).child('token').set(token);
+  saveUserToken(token, uid) {
+    this.db.database.ref('/users/' + uid).child('token').set(token);
   }
 
   addNotification(userId) {
@@ -48,6 +42,18 @@ export class DbApiService {
   getNotifications(): FirebaseListObservable<any[]> {
     this.notifications = this.db.list('/users/' + this.auth.getCurrentUser().uid + '/notifications');
     return this.notifications;
+  }
+
+  getGlobalConfigValue(user) {
+    return this.db.database.ref('/users/' + user).once('value').then((snapshot) => {
+      return snapshot.val().globalConfig;
+    })
+  }
+
+  updateConfig(globalConfig) {
+    return this.db.list('/users').update(this.auth.getCurrentUser().uid, {
+      globalConfig: globalConfig
+    })
   }
 
   getCurrentUser() {
@@ -135,7 +141,8 @@ export class DbApiService {
       email: data.email,
       name: form.name,
       country: form.country,
-      profile_image: image
+      profile_image: image,
+      globalConfig: false
     });
   }
 

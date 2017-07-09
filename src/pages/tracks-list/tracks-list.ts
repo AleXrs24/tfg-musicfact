@@ -1,3 +1,4 @@
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { SmartAudio } from './../../providers/smart-audio';
 import { ViewTrack } from './../view-track/view-track';
 import { Storage } from '@ionic/storage';
@@ -36,7 +37,7 @@ export class TracksList {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private lc: LoadingController,
     private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController, private storage: Storage,
-    private smartAudio: SmartAudio) {
+    private smartAudio: SmartAudio, private socialSharing: SocialSharing) {
     this.list = this.navParams.get("id");
     this.title = this.navParams.get("title");
     this.user = this.navParams.get("user");
@@ -167,6 +168,14 @@ export class TracksList {
                                     attention.present();
                                   } else {
                                     this.db.newList(data, track.$key, track.cover_page, title, this.userName);
+                                    let conf = this.toast.create({
+                                      message: 'Lista creada con éxito',
+                                      duration: 3000,
+                                      position: 'bottom',
+                                      showCloseButton: true,
+                                      closeButtonText: 'Ok'
+                                    });
+                                    conf.present();
                                   }
                                 }
                               });
@@ -187,22 +196,14 @@ export class TracksList {
           }
         },
         {
-          text: 'Share',
+          text: 'Compartir',
           icon: 'share',
-          cssClass: 'share',
           handler: () => {
-            console.log('Share clicked');
+            this.share(track);
           }
         },
         {
-          text: 'Play',
-          icon: 'arrow-dropright-circle',
-          handler: () => {
-            console.log('Play clicked');
-          }
-        },
-        {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel', // will always sort to be on the bottom
           icon: 'close',
           handler: () => {
@@ -262,4 +263,16 @@ export class TracksList {
     let modal = this.modal.create(ViewTrack, { trackid: trackid });
     modal.present();
   }
+
+  share(track) {
+    let options = {
+      message: track.title,
+      subject: track.artist,
+      files: null,
+      url: track.audio,
+      chooserTitle: 'Compartir con'
+    }
+    this.socialSharing.shareWithOptions(options);
+  }
+
 }

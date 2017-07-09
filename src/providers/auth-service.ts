@@ -21,7 +21,7 @@ export class AuthService {
         if (user) {
           this.currentUser = user;
           console.log("Current User is: ", this.currentUser.email);
-          observer.next();
+          observer.next(user);
         } else {
           this.currentUser = null;
           console.log("Current User is: ", this.currentUser);

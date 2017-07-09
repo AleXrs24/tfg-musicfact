@@ -24,7 +24,7 @@
       <ion-item>
         <ion-row>
           <ion-col col-2>
-            <ion-avatar>
+            <ion-avatar (click)="profileView($event, comment.user_id)">
               <img src="{{comment.user_img}}">
             </ion-avatar>
           </ion-col>

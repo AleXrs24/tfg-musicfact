@@ -1,3 +1,5 @@
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { Storage } from '@ionic/storage';
 import { ViewTrack } from './../view-track/view-track';
 import { Component } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
@@ -10,27 +12,23 @@ import * as _ from 'lodash';
   templateUrl: 'search.html'
 })
 export class SearchPage {
-  //allTracks: any[];
   tracks: any[];
   users: any[];
-  //allTags: any[];
   following: any[];
   isFollowed: boolean[] = [];
   search: string = "tracks";
+  userName: string;
 
-  constructor(public navCtrl: NavController, private db: DbApiService, private modal: ModalController) {
+  constructor(public navCtrl: NavController, private db: DbApiService, private modal: ModalController, private storage: Storage,
+    private http: Http) {
 
   }
 
-  // ionViewDidLoad() {
-  //   this.db.getTracks().subscribe(resp => {
-  //     this.allTracks = resp;
-  //     this.allTags = _.chain(resp).groupBy('tag').toPairs().map(item => _.zipObject(["tagName", "trackTags"], item)).value();
-  //     this.tracks = this.allTags;
-  //   });
-  // }
-
   ionViewDidLoad() {
+    this.storage.get('name').then((val) => {
+      this.userName = val;
+    });
+
     this.db.getTracks().subscribe(resp => {
       this.tracks = resp;
       this.tracks = this.tracks.filter((item) => {
@@ -45,16 +43,6 @@ export class SearchPage {
       this.updateUsersList();
     })
   }
-
-  // getItems(ev: any) {
-  //   this.ionViewDidLoad();
-  //   let val = ev.target.value;
-  //   if (val && val.trim() != '') {
-  //     this.tracks = this.tracks.filter((item) => {
-  //       return (item.tagName.toLowerCase().indexOf(val.toLowerCase()) > -1);
-  //     });
-  //   }
-  // }
 
   getItems(ev: any) {
     this.ionViewDidLoad();
@@ -85,12 +73,39 @@ export class SearchPage {
     })
   }
 
-  followUser(userId) {
-    this.db.followUser(userId);
+  followUser(user) {
+    this.db.followUser(user.$key);
+    this.db.addNotification(user.$key);
+
+    let url = 'https://fcm.googleapis.com/fcm/send';
+
+    let body =
+      {
+        "to": user.token,
+        "notification": {
+          "title": "¡Tienes un nuevo seguidor!",
+          "body": this.userName
+        }
+      };
+
+    let headers: Headers = new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': 'key=' + 'AIzaSyCR2GL7qx22hbSnNhItHUNggffw1DzeGP8'
+    });
+    let options = new RequestOptions({ headers: headers });
+
+    console.log(JSON.stringify(headers));
+
+    this.http.post(url, body, options).map(response => {
+      return response;
+    }).subscribe(data => {
+      console.log(data);
+    });
   }
 
   unFollowUser(userId) {
     this.db.unFollowUser(userId);
+    this.db.removeNotification(userId);
   }
 
   profileView($event, user) {

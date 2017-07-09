@@ -1,4 +1,9 @@
 <ion-content>
+  <div class="message" *ngIf="nlists == 0">
+    <h5>No has creado ninguna lista</h5>
+    <h6>¿Deseas crear una con la canción elegida?</h6>
+    <ion-icon color="app" name="add-circle" (click)="createList()"></ion-icon>
+  </div>
   <ion-list>
     <ion-item *ngFor="let item of lists" text-wrap (click)="addTrackToList(item)">
       <ion-thumbnail item-left>
@@ -16,5 +21,7 @@
       </button>
     </ion-item>
   </ion-list>
-  <button color="app" ion-button full (click)="close()">Cancelar</button>
+  <div class="cancel">
+    <button no-margin color="app" ion-button full (click)="close()">Cancelar</button>
+  </div>
 </ion-content>

@@ -3,7 +3,7 @@ import { SmartAudio } from './../../providers/smart-audio';
 import { ViewTrack } from './../view-track/view-track';
 import { Storage } from '@ionic/storage';
 import { Component } from '@angular/core';
-import { NavController, LoadingController, ModalController, ActionSheetController, AlertController } from 'ionic-angular';
+import { NavController, Tabs, LoadingController, ModalController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
 
 import { DbApiService } from './../../shared/db-api.service';
 import { AuthService } from '../../providers/auth-service';
@@ -12,7 +12,6 @@ import { Comments } from './../comments/comments';
 import { Lists } from './../lists/lists';
 
 import * as _ from 'lodash';
-//import { NativeAudio } from '@ionic-native/native-audio';
 
 @Component({
   selector: 'page-home',
@@ -20,7 +19,7 @@ import * as _ from 'lodash';
 })
 export class HomePage {
   tracks: any[];
-  users: any[];
+  users: any[] = null;
   likes: any[];
   reposts: any[];
   isLike: boolean[] = [];
@@ -30,10 +29,13 @@ export class HomePage {
   tracks_reposts: any[];
   userData: any[] = [];
   userName: string;
+  tab: Tabs;
+  ntracks: any;
 
   constructor(public navCtrl: NavController, private db: DbApiService, private auth: AuthService,
     private lc: LoadingController, private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private storage: Storage,
-    private smartAudio: SmartAudio, private socialSharing: SocialSharing) {
+    private smartAudio: SmartAudio, private socialSharing: SocialSharing, private toast: ToastController) {
+    this.tab = this.navCtrl.parent;
   }
 
   ionViewDidLoad() {
@@ -48,6 +50,18 @@ export class HomePage {
       this.db.getUsers().subscribe(resp => {
         this.users = resp;
       })
+
+      setTimeout(() => {
+        if (this.users == null) {
+          loader.dismiss();
+          let alert = this.ac.create({
+            title: 'No es posible establecer conexión con el servidor',
+            subTitle: 'Por favor, compruebe su conexión a internet',
+            buttons: ['De acuerdo']
+          });
+          alert.present();
+        }
+      }, 15000);
 
       this.db.getTracks().subscribe(resp => {
         this.tracks = resp;
@@ -68,7 +82,9 @@ export class HomePage {
                 })
                 this.tracks_filter.push(value);
               }
+              this.ntracks = this.tracks_filter.length;
             });
+
           }
 
           this.db.getLikes().subscribe(resp => {
@@ -97,10 +113,16 @@ export class HomePage {
 
         });
 
+        if (this.ntracks != 0) {
+          this.ntracks = 0;
+        }
         loader.dismiss();
-
       });
     });
+  }
+
+  goToSearch() {
+    this.tab.select(1);
   }
 
   likeTrack(track) {
@@ -122,15 +144,6 @@ export class HomePage {
 
   comments(track) {
     let modal = this.modal.create(Comments, { track_id: track });
-    // let ev = {
-    //   target: {
-    //     getBoundingClientRect: () => {
-    //       return {
-    //         top: '150'
-    //       };
-    //     }
-    //   }
-    // };
     modal.present();
   }
 
@@ -195,6 +208,14 @@ export class HomePage {
                                 text: 'Crear',
                                 handler: data => {
                                   this.db.newList(data, track.$key, track.cover_page, title, this.userName);
+                                  let conf = this.toast.create({
+                                    message: 'Lista creada con éxito',
+                                    duration: 3000,
+                                    position: 'bottom',
+                                    showCloseButton: true,
+                                    closeButtonText: 'Ok'
+                                  });
+                                  conf.present();
                                 }
                               });
                               privacy.present();
@@ -217,7 +238,7 @@ export class HomePage {
           text: 'Compartir',
           icon: 'share',
           handler: () => {
-            //this.share(track);
+            this.share(track);
           }
         },
         {
@@ -242,30 +263,15 @@ export class HomePage {
     modal.present();
   }
 
-  // share(track) {
-  //   let options = {
-  //     message: track.title,
-  //     subject: null, 
-  //     files: ['data:image/png;base64,R0lGODlhDAAMALMBAP8AAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAUKAAEALAAAAAAMAAwAQAQZMMhJK7iY4p3nlZ8XgmNlnibXdVqolmhcRQA7'],
-  //     url: track.audio,
-  //     chooserTitle: 'Compartir con'
-  //   }
-  //   this.socialSharing.shareWithOptions(options);
-
-  // }
-
-  // ionViewDidLoad() {
-  //   for (let track of this.tracks) {
-  //     this.nativeAudio.preloadSimple(track.id, track.url);
-  //   }
-  // }
-
-  // play(id) {
-  //   this.nativeAudio.play(id, () => console.log(id + 'is done playing'));
-  // }
-
-  // stop(id) {
-  //   this.nativeAudio.stop(id);
-  // }
+  share(track) {
+    let options = {
+      message: track.title,
+      subject: track.artist,
+      files: null,
+      url: track.audio,
+      chooserTitle: 'Compartir con'
+    }
+    this.socialSharing.shareWithOptions(options);
+  }
 
 }

@@ -1,3 +1,4 @@
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { SmartAudio } from './../../providers/smart-audio';
 import { ViewTrack } from './../view-track/view-track';
@@ -11,8 +12,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, AlertController, ToastController } from 'ionic-angular';
 import { TracksList } from './../tracks-list/tracks-list';
 import * as _ from 'lodash';
-//import { Push, PushObject, PushOptions } from '@ionic-native/push';
-import { Push, PushToken } from '@ionic/cloud-angular';
 
 /**
  * Generated class for the Profile page.
@@ -46,7 +45,7 @@ export class Profile {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private db: DbApiService, private auth: AuthService,
     private modal: ModalController, private as: ActionSheetController, private ac: AlertController, private toast: ToastController, private storage: Storage,
-    private smartAudio: SmartAudio, private push: Push, public http: Http) {
+    private smartAudio: SmartAudio, public http: Http, private socialSharing: SocialSharing) {
 
     this.user = navParams.data;
   }
@@ -99,8 +98,6 @@ export class Profile {
 
     });
 
-    //-----------------------------------------------------------------------
-
     this.db.getLists(this.user.$key).subscribe(resp => {
       this.lists = resp;
       if (this.user.$key != this.currentUser) {
@@ -110,8 +107,6 @@ export class Profile {
       }
       this.lists_filter.reverse();
     });
-
-    //----------------------------------------------------------------------
 
     this.db.getNumFollowers(this.user.$key).subscribe(resp => {
       this.nfollowers = resp;
@@ -203,6 +198,14 @@ export class Profile {
                                     attention.present();
                                   } else {
                                     this.db.newList(data, track.$key, track.cover_page, title, this.userName);
+                                    let conf = this.toast.create({
+                                      message: 'Lista creada con éxito',
+                                      duration: 3000,
+                                      position: 'bottom',
+                                      showCloseButton: true,
+                                      closeButtonText: 'Ok'
+                                    });
+                                    conf.present();
                                   }
                                 }
                               });
@@ -223,22 +226,14 @@ export class Profile {
           }
         },
         {
-          text: 'Share',
+          text: 'Compartir',
           icon: 'share',
-          cssClass: 'share',
           handler: () => {
-            console.log('Share clicked');
+            this.share(track);
           }
         },
         {
-          text: 'Play',
-          icon: 'arrow-dropright-circle',
-          handler: () => {
-            console.log('Play clicked');
-          }
-        },
-        {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel', // will always sort to be on the bottom
           icon: 'close',
           handler: () => {
@@ -289,15 +284,15 @@ export class Profile {
     this.db.unRepostTrack(track);
   }
 
-  followUser(user) {
-    this.db.followUser(user.$key);
-    this.db.addNotification(user.$key);
+  followUser() {
+    this.db.followUser(this.user.$key);
+    this.db.addNotification(this.user.$key);
 
     let url = 'https://fcm.googleapis.com/fcm/send';
 
     let body =
       {
-        "to": user.token,
+        "to": this.user.token,
         "notification": {
           "title": "¡Tienes un nuevo seguidor!",
           "body": this.userName
@@ -319,9 +314,9 @@ export class Profile {
     });
   }
 
-  unFollowUser(userId) {
-    this.db.unFollowUser(userId);
-    this.db.removeNotification(userId);
+  unFollowUser() {
+    this.db.unFollowUser(this.user.$key);
+    this.db.removeNotification(this.user.$key);
   }
 
   viewUsers(user, follow) {
@@ -337,9 +332,24 @@ export class Profile {
     this.navCtrl.push(TracksList, { id: list, title: title, user: this.user });
   }
 
+  goTabs() {
+    this.navCtrl.popToRoot();
+  }
+
   viewTrack(trackid) {
     let modal = this.modal.create(ViewTrack, { trackid: trackid });
     modal.present();
+  }
+
+  share(track) {
+    let options = {
+      message: track.title,
+      subject: track.artist,
+      files: null,
+      url: track.audio,
+      chooserTitle: 'Compartir con'
+    }
+    this.socialSharing.shareWithOptions(options);
   }
 
 }

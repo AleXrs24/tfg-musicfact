@@ -78,13 +78,6 @@ export class Uploading {
             break;
           case 'storage/canceled':
             // User canceled the upload
-            // if (this.newCoverPage && this.progress_image == 100) {
-            //   let desertRef = storageRef.child('img/cover-pages/' + this.imageName);
-            //   desertRef.delete().then(() => {
-            //   }).catch((err) => {
-            //     console.log(err);
-            //   })
-            // }
             break;
           case 'storage/unknown':
             // Unknown error occurred, inspect error.serverResponse
@@ -142,13 +135,6 @@ export class Uploading {
               break;
             case 'storage/canceled':
               // User canceled the upload
-              // if (this.progress_audio == 100) {
-              //   let desertRef = storageRef.child('mp3/' + this.trackName);
-              //   desertRef.delete().then(() => {
-              //   }).catch((err) => {
-              //     console.log(err);
-              //   })
-              // }
               break;
             case 'storage/unknown':
               // Unknown error occurred, inspect error.serverResponse
@@ -177,16 +163,5 @@ export class Uploading {
   dismiss() {
     this.viewCtrl.dismiss();
   }
-
-  // cancelUpload() {
-  //   if (this.newCoverPage && this.progress_image < 100)
-  //     this.uploadTask_image.cancel();
-
-  //   if (this.progress_audio < 100)
-  //     this.uploadTask_audio.cancel();
-
-  //   this.progress_image = 0;
-  //   this.progress_audio = 0;
-  // }
 
 }

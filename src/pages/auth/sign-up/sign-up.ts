@@ -3,7 +3,7 @@ import { ActionSheet, ActionSheetOptions } from '@ionic-native/action-sheet';
 import { DbApiService } from './../../../shared/db-api.service';
 import { AuthService } from './../../../providers/auth-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import firebase from 'firebase';
 
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
@@ -28,7 +28,7 @@ export class SignUp {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private vc: ViewController, private auth: AuthService,
     private db: DbApiService, private ac: AlertController, private as: ActionSheet, private camera: Camera, private lc: LoadingController,
-    private fb: FormBuilder) {
+    private fb: FormBuilder, private toast: ToastController) {
     this.image_path = 'assets/img/profile_image.png';
     this.image = 'assets/img/profile_image.png';
     this.new_image = false;
@@ -37,7 +37,7 @@ export class SignUp {
       password: ['', [Validators.required, Validators.pattern(/^[a-z0-9_-]{6,18}$/)]],
       confirmPassword: [''],
       name: ['', [Validators.required]],
-      country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]]
+      country: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]]
     }, {
         validator: this.MatchPassword
       });
@@ -69,8 +69,8 @@ export class SignUp {
           sourceType: this.camera.PictureSourceType.CAMERA,
           destinationType: this.camera.DestinationType.DATA_URL,
           encodingType: this.camera.EncodingType.JPEG,
-          targetWidth: 400,
-          targetHeight: 300,
+          targetWidth: 640,
+          targetHeight: 480,
           mediaType: this.camera.MediaType.PICTURE,
           correctOrientation: true
         };
@@ -81,8 +81,8 @@ export class SignUp {
           sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
           destinationType: this.camera.DestinationType.DATA_URL,
           encodingType: this.camera.EncodingType.JPEG,
-          targetWidth: 400,
-          targetHeight: 300,
+          targetWidth: 640,
+          targetHeight: 480,
           mediaType: this.camera.MediaType.PICTURE,
           correctOrientation: true
         };
@@ -159,6 +159,14 @@ export class SignUp {
 
               this.db.signInWithCredentials(res, this.myForm.value, this.image).then(() => {
                 loader.dismiss();
+                let conf = this.toast.create({
+                  message: 'Te has registrado con éxito. Por favor, ahora inicia sesión',
+                  duration: 3000,
+                  position: 'bottom',
+                  showCloseButton: true,
+                  closeButtonText: 'Ok'
+                });
+                conf.present();
                 this.vc.dismiss();
               }).catch(err => {
                 this.showError(err);
@@ -168,6 +176,14 @@ export class SignUp {
         } else {
           this.db.signInWithCredentials(res, this.myForm.value, this.image).then(() => {
             loader.dismiss();
+            let conf = this.toast.create({
+              message: 'Te has registrado con éxito. Por favor, ahora inicia sesión',
+              duration: 3000,
+              position: 'bottom',
+              showCloseButton: true,
+              closeButtonText: 'Ok'
+            });
+            conf.present();
             this.vc.dismiss();
           }).catch(err => {
             this.showError(err);

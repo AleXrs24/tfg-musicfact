@@ -1,16 +1,4 @@
 <ion-content>
-    <!--<ion-toolbar>
-        <ion-searchbar (ionInput)="getItems($event)" placeholder="Buscar por etiqueta"></ion-searchbar>
-    </ion-toolbar>
-
-    <ion-list>
-
-        <ion-item-group *ngFor="let tags of tracks">
-            <ion-item-divider color="light">{{ tags.tagName }}</ion-item-divider>
-            <button ion-item *ngFor="let track of tags.trackTags">{{ track.title }}</button>
-        </ion-item-group>
-
-    </ion-list>-->
 
     <ion-toolbar color="light">
         <ion-searchbar (ionInput)="getItems($event)" placeholder="Buscar"></ion-searchbar>
@@ -19,7 +7,7 @@
     <ion-toolbar color="light">
         <ion-segment [(ngModel)]="search" color="app">
             <ion-segment-button value="tracks">
-                <ion-icon name="musical-notes"></ion-icon>
+                <ion-icon name="headset"></ion-icon>
             </ion-segment-button>
 
             <ion-segment-button value="people">
@@ -47,7 +35,7 @@
                 </ion-avatar>
                 <h2>{{user.name}}</h2>
                 <p>{{user.country}}</p>
-                <button *ngIf="!isFollowed[i]" ion-button small item-right color="app" (click)="followUser(user.$key)">
+                <button *ngIf="!isFollowed[i]" ion-button small item-right color="app" (click)="followUser(user)">
                     <ion-icon name="person-add" ></ion-icon>
                 </button>
                 <button *ngIf="isFollowed[i]" ion-button small item-right outline color="app" (click)="unFollowUser(user.$key)">
