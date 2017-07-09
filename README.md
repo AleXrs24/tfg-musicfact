@@ -1,7 +1,8 @@
 MusicFact
+============================================
 
 Resumen del proyecto:
-
+============================================
 
 El objetivo principal de este proyecto es ayudar a las personas creativas a sacar a la luz sus creaciones musicales, para que puedan llegar en algún momento a comercializase. De tal manera que puedan subir, registrar, promover y difundir su música a través de canales, de una forma simple sin la necesidad de utilizar otros servicios de alojamiento de archivos.
 
@@ -10,7 +11,7 @@ A parte de proporcionar al resto de usuarios una plataforma músico-social, dond
 Como resultado, obtendremos un enorme tesoro de contenidos, entretejiéndolo todo en la red y haciendo que sea más fácil compartir nuestro ingenio.
 
 Puesta en marcha:
-
+============================================
 
 Antes de nada, es necesario tener todas las tecnologías y herramientas instaladas en el equipo donde queremos desplegar la aplicación. Para instalar Ionic debemos instalar primero NodeJS y el gestor de paquetes para JavaScript denominado NPM (Network Processor Module). Posteriormente, ya podemos instalar Ionic a través de la línea de comandos (CLI).
 
